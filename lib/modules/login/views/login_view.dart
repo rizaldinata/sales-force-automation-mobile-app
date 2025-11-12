@@ -12,78 +12,97 @@ class LoginView extends GetView<LoginController> {
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
-          child: Form(
-            key: controller.formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Logo aplikasi
-                const Icon(Icons.business, size: 80, color: primaryColor),
-                const SizedBox(height: 48.0),
-
-                // Teks Sambutan
-                Text(
-                  "Selamat datang di aplikasi Salesforce",
-                  textAlign: TextAlign.center,
-                  style: textTheme.headlineSmall,
+        child: LayoutBuilder(
+          builder: (context, viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
                 ),
-                const SizedBox(height: 8.0),
-                Text(
-                  "Silahkan masuk untuk melanjutkan",
-                  textAlign: TextAlign.center,
-                  style: textTheme.bodySmall,
-                ),
-
-                // Form usename
-                TextFormField(
-                  controller: controller.usernameC,
-                  decoration: const InputDecoration(
-                    hintText: "Username",
-                    prefixIcon: Icon(Icons.person_outline),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                    vertical: 48,
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Username tidak boleh kosong";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16.0),
-
-                // Form Password
-                TextFormField(
-                  controller: controller.passwordC,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: "Password",
-                    prefixIcon: Icon(Icons.lock_outline),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Password tidak boleh kosong";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 32.0),
-
-                // Tombol Masuk
-                Obx(
-                  () => controller.isLoading.value
-                      ? Center(child: CircularProgressIndicator())
-                      : ElevatedButton(
-                          onPressed: () {
-                            controller.login();
-                          },
-                          child: const Text("Masuk"),
+                  child: Form(
+                    key: controller.formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Logo Aplikasi
+                        const Icon(
+                          Icons.business,
+                          size: 80,
+                          color: primaryColor,
                         ),
+                        const SizedBox(height: 48.0),
+
+                        // Teks Sambutan
+                        Text(
+                          "Selamat datang di aplikasi Salesforce",
+                          textAlign: TextAlign.center,
+                          style: textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          "Silahkan masuk untuk melanjutkan",
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyMedium,
+                        ),
+                        const SizedBox(height: 48.0),
+
+                        // Form Username
+                        TextFormField(
+                          controller: controller.usernameC,
+                          decoration: const InputDecoration(
+                            hintText: "Username",
+                            prefixIcon: Icon(Icons.person_outline),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Username tidak boleh kosong";
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16.0),
+
+                        // Form Password
+                        TextFormField(
+                          controller: controller.passwordC,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            hintText: "Password",
+                            prefixIcon: Icon(Icons.lock_outline),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Password tidak boleh kosong";
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 32.0),
+
+                        // Tombol Masuk
+                        Obx(
+                          () => controller.isLoading.value
+                              ? const Center(child: CircularProgressIndicator())
+                              : ElevatedButton(
+                                  onPressed: () {
+                                    controller.login();
+                                  },
+                                  child: const Text("MASUK"),
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
