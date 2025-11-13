@@ -4,10 +4,19 @@ const Color primaryColor = Color(0xFF096835);
 const Color backgroundColor = Color(0xFFEDF4EE);
 const Color noFocused = Color(0xFFD9D9D9);
 
+const double paddingRightSuffixIcon = 12.0;
+
 class AppTheme {
   static final ThemeData light = ThemeData(
     primaryColor: primaryColor,
     scaffoldBackgroundColor: Colors.white,
+
+    // Warna Cursor
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: primaryColor,
+      selectionHandleColor: primaryColor,
+      selectionColor: primaryColor.withOpacity(0.3),
+    ),
 
     // Tema Elevated Button
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -34,6 +43,10 @@ class AppTheme {
       filled: true,
       fillColor: backgroundColor,
       border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(24.0),
+        borderSide: BorderSide(color: noFocused, width: 2.0),
+      ),
+      enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(24.0),
         borderSide: BorderSide(color: noFocused, width: 2.0),
       ),

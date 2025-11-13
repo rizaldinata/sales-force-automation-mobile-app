@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 class LoginController extends GetxController {
   final usernameC = TextEditingController();
   final passwordC = TextEditingController();
+  final isPasswordVisible = false.obs;
 
   final formKey = GlobalKey<FormState>();
 
@@ -14,6 +15,18 @@ class LoginController extends GetxController {
     usernameC.dispose();
     passwordC.dispose();
     super.onClose();
+  }
+
+  void togglePasswordVisibility() {
+    FocusNode? currentFocus = FocusManager.instance.primaryFocus;
+
+    isPasswordVisible.value = !isPasswordVisible.value;
+
+    if (currentFocus != null && currentFocus.context != null) {
+      currentFocus.unfocus();
+
+      FocusScope.of(currentFocus.context!).requestFocus(currentFocus);
+    }
   }
 
   Future<void> login() async {
