@@ -68,7 +68,7 @@ class LoginController extends GetxController {
             title: "Login Berhasil",
             message: "Selamat datang kembali, Admin!",
             onPressed: () {
-              Get.offAllNamed(AppRoutes.home);
+              Get.back();
             },
           );
         } else {
