@@ -2,12 +2,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppSpacing {
   // Spacing konsisten
-  static double xs = 4.h;
-  static double sm = 8.h;
-  static double md = 16.h;
-  static double lg = 24.h;
-  static double xl = 32.h;
-  static double xxl = 40.h;
+  static double spacing4 = 4.h;
+  static double spacing8 = 8.h;
+  static double spacing12 = 12.h;
+  static double spacing16 = 16.h;
+  static double spacing20 = 20.h;
+  static double spacing24 = 24.h;
+  static double spacing28 = 28.h;
+  static double spacing32 = 32.h;
+  static double spacing36 = 36.h;
+  static double spacing40 = 40.h;
 }
 
 class AppRadius {
@@ -16,7 +20,7 @@ class AppRadius {
   static double md = 12.r;
   static double lg = 16.r;
   static double xl = 24.r;
-  static double full = 50.r; // Untuk pill shape (rounded penuh)
+  static double full = 50.r;
 }
 
 class AppFontSize {

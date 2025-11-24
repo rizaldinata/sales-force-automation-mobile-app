@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:salesforce_app/app/ui/theme/app_constants.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/app/ui/widgets/primary_button.dart';
 import 'package:salesforce_app/app/ui/widgets/primary_text_form_field.dart';
@@ -45,7 +46,7 @@ class LoginView extends GetView<LoginController> {
                   ),
                 ),
 
-                // BAGIAN BAWAH: Form Login
+                // Bagian Form
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Column(
@@ -60,7 +61,7 @@ class LoginView extends GetView<LoginController> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      SizedBox(height: 6.h),
+                      SizedBox(height: AppSpacing.spacing8),
                       Text(
                         "Silahkan masuk untuk melanjutkan",
                         textAlign: TextAlign.center,
@@ -70,9 +71,9 @@ class LoginView extends GetView<LoginController> {
                         ),
                       ),
 
-                      SizedBox(height: 36.h),
+                      SizedBox(height: AppSpacing.spacing36),
 
-                      // Username Field
+                      // Form Username
                       PrimaryTextFormField(
                         controller: controller.usernameC,
                         hintText: "Username",
@@ -82,9 +83,9 @@ class LoginView extends GetView<LoginController> {
                             : null,
                       ),
 
-                      SizedBox(height: 12.h),
+                      SizedBox(height: AppSpacing.spacing12),
 
-                      // Password Field
+                      // Form Password
                       Obx(
                         () => PrimaryTextFormField(
                           controller: controller.passwordC,
@@ -107,7 +108,7 @@ class LoginView extends GetView<LoginController> {
                         ),
                       ),
 
-                      SizedBox(height: 24.h),
+                      SizedBox(height: AppSpacing.spacing24),
 
                       // Tombol Masuk
                       Obx(
@@ -118,7 +119,7 @@ class LoginView extends GetView<LoginController> {
                         ),
                       ),
 
-                      SizedBox(height: 12.h),
+                      SizedBox(height: AppSpacing.spacing12),
 
                       Center(
                         child: Text(
@@ -130,7 +131,7 @@ class LoginView extends GetView<LoginController> {
                         ),
                       ),
 
-                      SizedBox(height: 40.h),
+                      SizedBox(height: AppSpacing.spacing40),
                     ],
                   ),
                 ),
