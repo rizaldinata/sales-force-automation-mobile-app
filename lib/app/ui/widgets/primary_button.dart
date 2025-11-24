@@ -34,7 +34,7 @@ class PrimaryButton extends StatelessWidget {
                   height: 20.h,
                   child: CircularProgressIndicator(
                     color: Colors.white,
-                    strokeWidth: 2.5.w,
+                    strokeWidth: 3.w,
                   ),
                 ),
               )

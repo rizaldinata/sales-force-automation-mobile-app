@@ -23,7 +23,7 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.full),
         ),
@@ -54,15 +54,15 @@ class AppTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(50.r),
-        borderSide: BorderSide(color: primaryColor, width: 2.0.w),
+        borderSide: BorderSide(color: primaryColor, width: 1.0.w),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(50.r),
-        borderSide: BorderSide(color: Colors.red, width: 1.5.w),
+        borderSide: BorderSide(color: Colors.red, width: 1.0.w),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(50.r),
-        borderSide: BorderSide(color: Colors.red, width: 2.0.w),
+        borderSide: BorderSide(color: Colors.red, width: 1.0.w),
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
       hintStyle: TextStyle(
