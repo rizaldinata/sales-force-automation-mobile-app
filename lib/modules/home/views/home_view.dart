@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/modules/home/controllers/home_controller.dart';
+import 'package:salesforce_app/modules/home/views/tabs/profile_tab.dart';
 import 'tabs/dashboard_tab.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -28,16 +29,7 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ),
               ),
-              Center(
-                child: Text(
-                  "Halaman Profil",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    color: primaryColor,
-                  ),
-                ),
-              ),
+              const ProfileTab(),
             ],
           ),
         ),
