@@ -30,15 +30,19 @@ class LoginView extends GetView<LoginController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'SALESFORCE',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 32.sp,
-                            fontWeight: FontWeight.w900,
-                            color: primaryColor,
-                            letterSpacing: 1.5.w,
-                            height: 1.2.h,
+                        Transform.rotate(
+                          angle: -0.1,
+                          child: Text(
+                            'SALESFORCE',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'LuckiestGuy',
+                              fontSize: 48.sp,
+                              fontWeight: FontWeight.w900,
+                              color: primaryColor,
+                              letterSpacing: 1.5.w,
+                              height: 1.2.h,
+                            ),
                           ),
                         ),
                       ],
@@ -99,6 +103,8 @@ class LoginView extends GetView<LoginController> {
                                 : null,
                             suffixIcon: IconButton(
                               padding: EdgeInsets.only(right: 24),
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
                               icon: Icon(
                                 controller.isPasswordVisible.value
                                     ? Icons.visibility_off_outlined

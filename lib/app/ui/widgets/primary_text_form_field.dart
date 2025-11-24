@@ -38,6 +38,9 @@ class PrimaryTextFormField extends StatelessWidget {
       onFieldSubmitted: onFieldSubmitted == null
           ? null
           : (_) => onFieldSubmitted!(),
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       decoration: InputDecoration(hintText: hintText, suffixIcon: suffixIcon),
       validator: validator,
     );
