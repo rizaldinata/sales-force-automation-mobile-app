@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:salesforce_app/app/routes/app_routes.dart';
 
 class LoginController extends GetxController {
   final usernameC = TextEditingController();
@@ -30,13 +31,14 @@ class LoginController extends GetxController {
   }
 
   Future<void> login() async {
-    if (formKey.currentState!.validate()) {
+    final form = formKey.currentState;
+    if (form != null && form.validate()) {
       try {
         isLoading.value = true;
 
         await Future.delayed(const Duration(seconds: 2));
 
-        Get.offAllNamed('/home');
+        Get.offAllNamed(AppRoutes.home);
       } catch (e) {
         Get.snackbar(
           "Error",

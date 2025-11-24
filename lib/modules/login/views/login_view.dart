@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
+import 'package:salesforce_app/app/ui/widgets/primary_button.dart';
+import 'package:salesforce_app/app/ui/widgets/primary_text_form_field.dart';
 import 'package:salesforce_app/modules/login/controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -13,131 +16,112 @@ class LoginView extends GetView<LoginController> {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        behavior: HitTestBehavior.opaque,
+        onTap: () => FocusScope.of(context).unfocus(),
         child: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, viewportConstraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: viewportConstraints.maxHeight,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0,
-                      vertical: 48,
-                    ),
-                    child: Form(
-                      key: controller.formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          // Logo Aplikasi
-                          SizedBox(height: 24.0),
-                          Image.asset('assets/images/logo_salesforce.png'),
-                          SizedBox(height: 24.0),
-
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              // Teks Sambutan
-                              Text(
-                                "Selamat datang di aplikasi Salesforce",
-                                textAlign: TextAlign.center,
-                                style: textTheme.headlineSmall,
-                              ),
-                              const SizedBox(height: 8.0),
-                              Text(
-                                "Silahkan masuk untuk melanjutkan",
-                                textAlign: TextAlign.center,
-                                style: textTheme.bodyMedium,
-                              ),
-                              const SizedBox(height: 48.0),
-
-                              // Form Username
-                              TextFormField(
-                                controller: controller.usernameC,
-                                autofocus: true,
-                                textInputAction: TextInputAction.next,
-                                decoration: const InputDecoration(
-                                  hintText: "Username",
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Username tidak boleh kosong";
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 16.0),
-
-                              // Form Password
-                              Obx(
-                                () => TextFormField(
-                                  controller: controller.passwordC,
-                                  obscureText:
-                                      !controller.isPasswordVisible.value,
-                                  textInputAction: TextInputAction.done,
-                                  onFieldSubmitted: (_) => controller.login(),
-                                  decoration: InputDecoration(
-                                    hintText: "Password",
-                                    suffixIcon: Padding(
-                                      padding: EdgeInsetsGeometry.only(
-                                        right: paddingRightSuffixIcon,
-                                      ),
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: IconButton(
-                                          icon: Icon(
-                                            controller.isPasswordVisible.value
-                                                ? Icons.visibility_off
-                                                : Icons.visibility,
-                                          ),
-                                          onPressed: controller
-                                              .togglePasswordVisibility,
-                                        ),
-                                      ),
-                                    ),
-                                    suffixIconColor: noFocused,
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Password tidak boleh kosong";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 32.0),
-
-                              // Tombol Masuk
-                              Obx(
-                                () => controller.isLoading.value
-                                    ? const Center(
-                                        child: CircularProgressIndicator(),
-                                      )
-                                    : ElevatedButton(
-                                        onPressed: () {
-                                          controller.login();
-                                        },
-                                        child: const Text(
-                                          "MASUK",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ),
-                              ),
-                            ],
+          child: SizedBox(
+            height: 1.sh,
+            width: 1.sw,
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'SALESFORCE',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 32.sp,
+                            fontWeight: FontWeight.w900,
+                            color: primaryColor,
+                            letterSpacing: 1.5.w,
+                            height: 1.2.h,
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 24.h),
+                        Text(
+                          "Selamat datang di aplikasi Salesforce",
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontSize: 14.sp,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 6.h),
+                        Text(
+                          "Silahkan masuk untuk melanjutkan",
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontSize: 13.sp,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              );
-            },
+
+                // BAGIAN BAWAH: Form Login
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Username Field
+                      PrimaryTextFormField(
+                        controller: controller.usernameC,
+                        hintText: "Username",
+                        autofocus: false,
+                        validator: (value) => (value == null || value.isEmpty)
+                            ? "Username wajib diisi"
+                            : null,
+                      ),
+
+                      SizedBox(height: 16.h),
+
+                      // Password Field
+                      Obx(
+                        () => PrimaryTextFormField(
+                          controller: controller.passwordC,
+                          hintText: "Password",
+                          obscureText: !controller.isPasswordVisible.value,
+                          validator: (value) => (value == null || value.isEmpty)
+                              ? "Password wajib diisi"
+                              : null,
+                          suffixIcon: IconButton(
+                            padding: EdgeInsets.only(right: 24),
+                            icon: Icon(
+                              controller.isPasswordVisible.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                              color: Colors.grey[600],
+                              size: 20.sp,
+                            ),
+                            onPressed: controller.togglePasswordVisibility,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 24.h),
+
+                      // Tombol Masuk
+                      Obx(
+                        () => PrimaryButton(
+                          text: "MASUK",
+                          onPressed: controller.login,
+                          isLoading: controller.isLoading.value,
+                        ),
+                      ),
+
+                      SizedBox(height: 40.h), // Bottom spacing
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
