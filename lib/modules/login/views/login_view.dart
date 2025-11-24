@@ -40,25 +40,6 @@ class LoginView extends GetView<LoginController> {
                             height: 1.2.h,
                           ),
                         ),
-                        SizedBox(height: 24.h),
-                        Text(
-                          "Selamat datang di aplikasi Salesforce",
-                          textAlign: TextAlign.center,
-                          style: textTheme.bodyMedium?.copyWith(
-                            fontSize: 14.sp,
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 6.h),
-                        Text(
-                          "Silahkan masuk untuk melanjutkan",
-                          textAlign: TextAlign.center,
-                          style: textTheme.bodyMedium?.copyWith(
-                            fontSize: 13.sp,
-                            color: Colors.grey[600],
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -70,6 +51,27 @@ class LoginView extends GetView<LoginController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Text(
+                        "Selamat datang di aplikasi Salesforce",
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyMedium?.copyWith(
+                          fontSize: 14.sp,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 6.h),
+                      Text(
+                        "Silahkan masuk untuk melanjutkan",
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyMedium?.copyWith(
+                          fontSize: 13.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+
+                      SizedBox(height: 36.h),
+
                       // Username Field
                       PrimaryTextFormField(
                         controller: controller.usernameC,
@@ -80,7 +82,7 @@ class LoginView extends GetView<LoginController> {
                             : null,
                       ),
 
-                      SizedBox(height: 16.h),
+                      SizedBox(height: 12.h),
 
                       // Password Field
                       Obx(
@@ -116,7 +118,19 @@ class LoginView extends GetView<LoginController> {
                         ),
                       ),
 
-                      SizedBox(height: 40.h), // Bottom spacing
+                      SizedBox(height: 12.h),
+
+                      Center(
+                        child: Text(
+                          "Versi 1.0.0",
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontSize: 13.sp,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 40.h),
                     ],
                   ),
                 ),
