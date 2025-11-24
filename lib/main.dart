@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import ini
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:salesforce_app/app/routes/app_pages.dart';
 import 'package:salesforce_app/app/routes/app_routes.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/modules/home/controllers/home_controller.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDateFormatting('id_ID', null);
+
   runApp(const MyApp());
 }
 
