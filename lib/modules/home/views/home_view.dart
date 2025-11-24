@@ -5,13 +5,11 @@ import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/modules/home/controllers/home_controller.dart';
 import 'tabs/dashboard_tab.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HomeController());
-
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -19,10 +17,7 @@ class HomeView extends StatelessWidget {
           () => IndexedStack(
             index: controller.tabIndex.value,
             children: [
-              // Tab Dashboard
               const DashboardTab(),
-
-              // Tab Kunjungan
               Center(
                 child: Text(
                   "Halaman Kunjungan",
@@ -33,8 +28,6 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // Tab Profil
               Center(
                 child: Text(
                   "Halaman Profil",
@@ -49,8 +42,6 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-
-      // Navbar
       bottomNavigationBar: Container(
         height: 80.h,
         decoration: const BoxDecoration(
@@ -64,21 +55,9 @@ class HomeView extends StatelessWidget {
           () => Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(
-                icon: Icons.home_filled,
-                index: 0,
-                controller: controller,
-              ),
-              _buildNavItem(
-                icon: Icons.flight_takeoff,
-                index: 1,
-                controller: controller,
-              ),
-              _buildNavItem(
-                icon: Icons.account_circle,
-                index: 2,
-                controller: controller,
-              ),
+              _buildNavItem(icon: Icons.home_filled, index: 0),
+              _buildNavItem(icon: Icons.flight_takeoff, index: 1),
+              _buildNavItem(icon: Icons.account_circle, index: 2),
             ],
           ),
         ),
@@ -86,15 +65,13 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  // Helper Widget
-  Widget _buildNavItem({
-    required IconData icon,
-    required int index,
-    required HomeController controller,
-  }) {
+  Widget _buildNavItem({required IconData icon, required int index}) {
     bool isSelected = controller.tabIndex.value == index;
     return IconButton(
-      onPressed: () => controller.changeTabIndex(index),
+      onPressed: () {
+        print("Icon $index diklik");
+        controller.changeTabIndex(index);
+      },
       icon: Icon(
         icon,
         color: isSelected ? Colors.white : Colors.white.withOpacity(0.4),

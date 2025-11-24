@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import ini
 import 'package:salesforce_app/app/routes/app_pages.dart';
 import 'package:salesforce_app/app/routes/app_routes.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
+import 'package:salesforce_app/modules/home/controllers/home_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.light,
           initialRoute: AppRoutes.login,
           getPages: AppPages.routes,
+          initialBinding: BindingsBuilder(() {
+            Get.put(HomeController(), permanent: true);
+          }),
         );
       },
     );
