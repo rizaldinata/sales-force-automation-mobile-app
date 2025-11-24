@@ -62,7 +62,6 @@ class LoginView extends GetView<LoginController> {
                           "Selamat datang di aplikasi Salesforce",
                           textAlign: TextAlign.center,
                           style: textTheme.bodyMedium?.copyWith(
-                            fontSize: 14.sp,
                             color: Colors.black87,
                             fontWeight: FontWeight.w500,
                           ),
@@ -123,7 +122,7 @@ class LoginView extends GetView<LoginController> {
                         Obx(
                           () => PrimaryButton(
                             text: "MASUK",
-                            onPressed: controller.login,
+                            onPressed: controller.loginManual,
                             isLoading: controller.isLoading.value,
                           ),
                         ),
