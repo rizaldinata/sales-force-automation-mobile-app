@@ -3,58 +3,48 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/modules/home/controllers/home_controller.dart';
-import 'package:salesforce_app/modules/home/views/widgets/home_daily_info_widget.dart';
-import 'package:salesforce_app/modules/home/views/widgets/home_header_widget.dart';
-import 'package:salesforce_app/modules/home/views/widgets/home_menu_grid_widget.dart';
+import 'tabs/dashboard_tab.dart';
 
-class HomeView extends GetView<HomeController> {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(HomeController());
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        child: Obx(
+          () => IndexedStack(
+            index: controller.tabIndex.value,
             children: [
-              const HomeHeaderWidget(),
-              SizedBox(height: 24.h),
-              HomeMenuGrid(),
-              SizedBox(height: 24.h),
+              // Tab Dashboard
+              const DashboardTab(),
 
-              Text(
-                "Produk terbaru",
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: primaryColor,
-                ),
-              ),
-              SizedBox(height: 12.h),
-              SizedBox(
-                height: 140.h,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  separatorBuilder: (c, i) => SizedBox(width: 12.w),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: 100.w,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                    );
-                  },
+              // Tab Kunjungan
+              Center(
+                child: Text(
+                  "Halaman Kunjungan",
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: primaryColor,
+                  ),
                 ),
               ),
 
-              SizedBox(height: 24.h),
-              const HomeDailyInfo(),
-              SizedBox(height: 40.h),
+              // Tab Profil
+              Center(
+                child: Text(
+                  "Halaman Profil",
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: primaryColor,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -70,31 +60,45 @@ class HomeView extends GetView<HomeController> {
             topRight: Radius.circular(0),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              onPressed: () {}, // Tab Home
-              icon: Icon(Icons.home_filled, color: Colors.white, size: 32.sp),
-            ),
-            IconButton(
-              onPressed: () {}, // Tab Tengah
-              icon: Icon(
-                Icons.flight_takeoff,
-                color: Colors.white70,
-                size: 32.sp,
+        child: Obx(
+          () => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(
+                icon: Icons.home_filled,
+                index: 0,
+                controller: controller,
               ),
-            ),
-            IconButton(
-              onPressed: () {}, // Tab Profil
-              icon: Icon(
-                Icons.account_circle,
-                color: Colors.white70,
-                size: 32.sp,
+              _buildNavItem(
+                icon: Icons.flight_takeoff,
+                index: 1,
+                controller: controller,
               ),
-            ),
-          ],
+              _buildNavItem(
+                icon: Icons.account_circle,
+                index: 2,
+                controller: controller,
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  // Helper Widget
+  Widget _buildNavItem({
+    required IconData icon,
+    required int index,
+    required HomeController controller,
+  }) {
+    bool isSelected = controller.tabIndex.value == index;
+    return IconButton(
+      onPressed: () => controller.changeTabIndex(index),
+      icon: Icon(
+        icon,
+        color: isSelected ? Colors.white : Colors.white.withOpacity(0.4),
+        size: 32.sp,
       ),
     );
   }
