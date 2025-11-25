@@ -6,14 +6,18 @@ class HomeMenuGrid extends StatelessWidget {
   HomeMenuGrid({super.key});
 
   final List<Map<String, dynamic>> menus = [
-    {"label": "Outlet", "icon": Icons.store},
-    {"label": "Presensi v2", "icon": Icons.fingerprint},
-    {"label": "Survey toko", "icon": Icons.list_alt},
-    {"label": "Pesanan", "icon": Icons.shopping_cart},
-    {"label": "Produk", "icon": Icons.inventory_2},
-    {"label": "Kunjungan v2", "icon": Icons.location_on},
-    {"label": "Plan kunjungan", "icon": Icons.map},
-    {"label": "Lain lain", "icon": Icons.more_horiz},
+    {"label": "Outlet", "icon": Icons.store_mall_directory, "action": null},
+    {"label": "Presensi v2", "icon": Icons.fingerprint, "action": null},
+    {
+      "label": "Survey toko",
+      "icon": Icons.assignment_turned_in,
+      "action": null,
+    },
+    {"label": "Pesanan", "icon": Icons.shopping_cart, "action": null},
+    {"label": "Produk", "icon": Icons.inventory_2, "action": null},
+    {"label": "Kunjungan v2", "icon": Icons.location_on, "action": 1},
+    {"label": "Plan kunjungan", "icon": Icons.calendar_month, "action": null},
+    {"label": "Lain lain", "icon": Icons.apps, "action": null},
   ];
 
   @override
@@ -43,7 +47,15 @@ class HomeMenuGrid extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                CircleAvatar(radius: 28.r, backgroundColor: mintGrean),
+                CircleAvatar(
+                  radius: 28.r,
+                  backgroundColor: mintGrean,
+                  child: Icon(
+                    menus[index]['icon'],
+                    color: Colors.white,
+                    size: 28.sp,
+                  ),
+                ),
                 SizedBox(height: 8.h),
                 Text(
                   menus[index]['label'],
