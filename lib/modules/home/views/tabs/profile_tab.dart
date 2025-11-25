@@ -9,19 +9,16 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Inject Controller khusus Profile disini
     final controller = Get.put(ProfileController());
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
       child: Column(
         children: [
-          // --- HEADER: FOTO & NAMA ---
           SizedBox(height: 20.h),
           Center(
             child: Column(
               children: [
-                // Lingkaran Foto
                 Container(
                   padding: EdgeInsets.all(4.w),
                   decoration: BoxDecoration(
@@ -39,7 +36,6 @@ class ProfileTab extends StatelessWidget {
                     radius: 50.r,
                     backgroundColor: Colors.grey[200],
                     child: Icon(Icons.person, size: 50.sp, color: Colors.grey),
-                    // Nanti ganti dengan: backgroundImage: NetworkImage(url),
                   ),
                 ),
                 SizedBox(height: 16.h),
@@ -65,7 +61,7 @@ class ProfileTab extends StatelessWidget {
 
           SizedBox(height: 32.h),
 
-          // --- SECTION 1: DATA PRIBADI ---
+          // Data Pribadi
           _buildSectionHeader("Informasi Pribadi"),
           Container(
             padding: EdgeInsets.all(16.w),
@@ -85,7 +81,7 @@ class ProfileTab extends StatelessWidget {
 
           SizedBox(height: 24.h),
 
-          // --- SECTION 2: DEVICE INFO ---
+          // Informasi Device
           _buildSectionHeader("Informasi Perangkat"),
           Container(
             padding: EdgeInsets.all(16.w),
@@ -120,13 +116,12 @@ class ProfileTab extends StatelessWidget {
 
           SizedBox(height: 40.h),
 
-          // --- TOMBOL LOGOUT ---
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: controller.logout,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red[50], // Merah muda
+                backgroundColor: Colors.red[50],
                 foregroundColor: Colors.red, // Teks Merah
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 elevation: 0,

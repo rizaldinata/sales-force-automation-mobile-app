@@ -16,7 +16,7 @@ class HomeHeaderWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // 1. Baris Profil
+          // Profil
           Row(
             children: [
               Expanded(
@@ -46,7 +46,7 @@ class HomeHeaderWidget extends StatelessWidget {
           Divider(color: Colors.white24, thickness: 1),
           SizedBox(height: 16.h),
 
-          // 2. Baris Info Pesanan
+          // Info Pesanan
           Row(
             children: [
               _buildStatItem(

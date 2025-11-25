@@ -22,7 +22,7 @@ class HomeDailyInfo extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // KARTU KIRI (List Info)
+            // Rangkuman Informasi Harian
             Expanded(
               flex: 3,
               child: Container(
@@ -58,7 +58,8 @@ class HomeDailyInfo extends StatelessWidget {
               ),
             ),
             SizedBox(width: 12.w),
-            // KARTU KANAN (Jam Masuk/Keluar)
+
+            // Absensi
             Expanded(
               flex: 2,
               child: Container(
