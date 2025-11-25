@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,7 +55,6 @@ class HomeView extends GetView<HomeController> {
     bool isSelected = controller.tabIndex.value == index;
     return IconButton(
       onPressed: () {
-        print("Icon $index diklik");
         controller.changeTabIndex(index);
       },
       icon: Icon(
