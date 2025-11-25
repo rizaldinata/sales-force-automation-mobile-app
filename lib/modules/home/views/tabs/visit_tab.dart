@@ -1,9 +1,11 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:salesforce_app/modules/home/controllers/visit_controller.dart';
 
 class VisitTab extends StatelessWidget {
@@ -104,27 +106,55 @@ class VisitTab extends StatelessWidget {
           SizedBox(height: 12.h),
 
           Container(
-            height: 150.h,
+            height: 200.h,
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.r),
-              color: Colors.grey[300],
-              image: const DecorationImage(
-                image: NetworkImage(
-                  "https://img.freepik.com/free-vector/city-map-navigation-interface_23-2148494957.jpg",
-                ),
-                fit: BoxFit.cover,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                ),
-              ],
+              border: Border.all(color: Colors.grey[300]!),
             ),
-            child: Center(
-              child: Icon(Icons.location_on, color: Colors.red, size: 40.sp),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.r),
+              child: Obx(() {
+                if (controller.isLoadingMap.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return FlutterMap(
+                  mapController: controller.mapController,
+                  options: MapOptions(
+                    initialCenter: LatLng(
+                      controller.currentLat.value,
+                      controller.currentLng.value,
+                    ),
+                    initialZoom: 15.0,
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName: 'com.salesforce.app',
+                    ),
+
+                    MarkerLayer(
+                      markers: [
+                        Marker(
+                          point: LatLng(
+                            controller.currentLat.value,
+                            controller.currentLng.value,
+                          ),
+                          width: 40,
+                          height: 40,
+                          child: Icon(
+                            Icons.location_on,
+                            color: Colors.red,
+                            size: 40.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }),
             ),
           ),
 

@@ -1,5 +1,8 @@
+import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:salesforce_app/app/core/utils/app_dialog.dart';
 
 class VisitController extends GetxController {
@@ -10,16 +13,56 @@ class VisitController extends GetxController {
     "Outlet Merdeka",
   ];
   final outletTypeList = ["General Trade (GT)", "Modern Trade (MT)", "Pareto"];
-
   var selectedOutlet = Rxn<String>();
   var selectedOutletType = Rxn<String>();
-
   var waktuDatang = "Belum".obs;
   var waktuPulang = "Belum".obs;
-
   var visitStatus = 0.obs;
-
   var isCheckedIn = false.obs;
+  var isLoadingMap = true.obs;
+  var currentLat = 0.0.obs;
+  var currentLng = 0.0.obs;
+
+  final MapController mapController = MapController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    getCurrentLocation();
+  }
+
+  Future<void> getCurrentLocation() async {
+    isLoadingMap.value = true;
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        Get.snackbar("Error", "GPS HP Anda mati. Mohon nyalakan.");
+        isLoadingMap.value = false;
+        return;
+      }
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          Get.snackbar("Izin Ditolak", "Aplikasi butuh izin lokasi.");
+          isLoadingMap.value = false;
+          return;
+        }
+      }
+
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      currentLat.value = position.latitude;
+      currentLng.value = position.longitude;
+      isLoadingMap.value = false;
+    } catch (e) {
+      isLoadingMap.value = false;
+      Get.snackbar("Error", "Gagal mengambil lokasi: $e");
+    }
+  }
 
   void handleButtonAction() {
     if (visitStatus.value == 0) {
