@@ -31,6 +31,42 @@ class DashboardTab extends StatelessWidget {
         "image":
             "https://down-id.img.susercontent.com/file/id-11134207-7r98o-lsm6w25f82w0ce",
       },
+      {
+        "name": "Sarung Atlas Idaman",
+        "variant": "555 Kembang",
+        "image":
+            "https://images.tokopedia.net/img/cache/700/VqbcmM/2022/9/5/9e3b7b25-1e3e-4770-9838-83a31525925d.jpg", // Contoh gambar
+      },
+      {
+        "name": "Sarung BHS Classic",
+        "variant": "Gold Motif",
+        "image":
+            "https://dynamic.zacdn.com/J_Yygv6n-E_i5O_GqA-gXqO2y5U=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/bhs-3135-9653634-1.jpg",
+      },
+      {
+        "name": "Sarung BHS Masterpiece",
+        "variant": "Hujan Gerimis",
+        "image":
+            "https://down-id.img.susercontent.com/file/id-11134207-7r98o-lsm6w25f82w0ce",
+      },
+      {
+        "name": "Sarung Atlas Idaman",
+        "variant": "555 Kembang",
+        "image":
+            "https://images.tokopedia.net/img/cache/700/VqbcmM/2022/9/5/9e3b7b25-1e3e-4770-9838-83a31525925d.jpg", // Contoh gambar
+      },
+      {
+        "name": "Sarung BHS Classic",
+        "variant": "Gold Motif",
+        "image":
+            "https://dynamic.zacdn.com/J_Yygv6n-E_i5O_GqA-gXqO2y5U=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/bhs-3135-9653634-1.jpg",
+      },
+      {
+        "name": "Sarung BHS Masterpiece",
+        "variant": "Hujan Gerimis",
+        "image":
+            "https://down-id.img.susercontent.com/file/id-11134207-7r98o-lsm6w25f82w0ce",
+      },
     ];
 
     return SingleChildScrollView(
@@ -56,18 +92,23 @@ class DashboardTab extends StatelessWidget {
 
           SizedBox(
             height: 180.h,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: products.length,
-              separatorBuilder: (c, i) => SizedBox(width: 16.w),
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return _buildProductCard(
-                  name: product["name"]!,
-                  variant: product["variant"]!,
-                  imageUrl: product["image"]!,
-                );
-              },
+            child: OverflowBox(
+              maxWidth: 1.sw,
+              minWidth: 1.sw,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                itemCount: products.length,
+                separatorBuilder: (c, i) => SizedBox(width: 16.w),
+                itemBuilder: (context, index) {
+                  final product = products[index];
+                  return _buildProductCard(
+                    name: product["name"]!,
+                    variant: product["variant"]!,
+                    imageUrl: product["image"]!,
+                  );
+                },
+              ),
             ),
           ),
 
