@@ -167,28 +167,41 @@ class VisitTab extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 50.h,
-            child: Obx(
-              () => ElevatedButton(
-                onPressed: controller.isCheckedIn.value
-                    ? null
-                    : controller.checkIn,
+            child: Obx(() {
+              String buttonText = "Check In";
+              Color buttonColor = const Color(0xFF0D5D37);
+              bool isDisabled = false;
+
+              if (controller.visitStatus.value == 1) {
+                buttonText = "Check Out (Selesai)";
+                buttonColor = Colors.orange[800]!;
+              } else if (controller.visitStatus.value == 2) {
+                buttonText = "Kunjungan Selesai";
+                buttonColor = Colors.grey;
+                isDisabled = true;
+              }
+
+              return ElevatedButton(
+                onPressed: isDisabled ? null : controller.handleButtonAction,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0D5D37),
+                  backgroundColor: buttonColor,
                   foregroundColor: Colors.white,
+                  disabledBackgroundColor: Colors.grey[300],
+                  disabledForegroundColor: Colors.grey[600],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50.r),
                   ),
                   elevation: 0,
                 ),
                 child: Text(
-                  controller.isCheckedIn.value ? "Sudah Check-In" : "Check In",
+                  buttonText,
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
 
           SizedBox(height: 40.h),
