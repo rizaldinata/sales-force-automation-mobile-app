@@ -15,7 +15,7 @@ class ProfileTab extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
       child: Column(
         children: [
-          SizedBox(height: 20.h),
+          SizedBox(height: 10.h),
           Center(
             child: Column(
               children: [
@@ -24,18 +24,26 @@ class ProfileTab extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
+                    border: Border.all(
+                      color: mintGrean.withOpacity(0.5),
+                      width: 1,
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black12,
+                        color: Colors.black.withOpacity(0.05),
                         blurRadius: 10,
-                        offset: Offset(0, 5),
+                        offset: const Offset(0, 5),
                       ),
                     ],
                   ),
                   child: CircleAvatar(
                     radius: 50.r,
-                    backgroundColor: Colors.grey[200],
-                    child: Icon(Icons.person, size: 50.sp, color: Colors.grey),
+                    backgroundColor: Colors.grey[100],
+                    child: Icon(
+                      Icons.person,
+                      size: 50.sp,
+                      color: Colors.grey[400],
+                    ),
                   ),
                 ),
                 SizedBox(height: 16.h),
@@ -52,7 +60,11 @@ class ProfileTab extends StatelessWidget {
                 Obx(
                   () => Text(
                     controller.jabatan.value,
-                    style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ],
@@ -61,54 +73,69 @@ class ProfileTab extends StatelessWidget {
 
           SizedBox(height: 32.h),
 
-          // Data Pribadi
           _buildSectionHeader("Informasi Pribadi"),
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
             decoration: _boxDecoration(),
             child: Column(
               children: [
-                _buildInfoRow("Username", controller.username.value),
+                _buildProfileItem(
+                  Icons.person_outline,
+                  "Username",
+                  controller.username.value,
+                ),
                 _buildDivider(),
-                _buildInfoRow("NIP", controller.nip.value),
+                _buildProfileItem(
+                  Icons.badge_outlined,
+                  "NIP",
+                  controller.nip.value,
+                ),
                 _buildDivider(),
-                _buildInfoRow("No. KTP", controller.noKtp.value),
+                _buildProfileItem(
+                  Icons.credit_card,
+                  "No. KTP",
+                  controller.noKtp.value,
+                ),
                 _buildDivider(),
-                _buildInfoRow("No. Handphone", controller.noHp.value),
+                _buildProfileItem(
+                  Icons.phone_android,
+                  "No. Handphone",
+                  controller.noHp.value,
+                ),
               ],
             ),
           ),
 
           SizedBox(height: 24.h),
 
-          // Informasi Device
           _buildSectionHeader("Informasi Perangkat"),
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
             decoration: _boxDecoration(),
             child: Column(
               children: [
                 Obx(
-                  () => _buildInfoRow(
+                  () => _buildProfileItem(
+                    Icons.info_outline,
                     "Versi Aplikasi",
                     controller.appVersion.value,
                   ),
                 ),
                 _buildDivider(),
                 Obx(
-                  () => _buildInfoRow(
+                  () => _buildProfileItem(
+                    Icons.phone_iphone,
                     "Device Model",
                     controller.deviceName.value,
                   ),
                 ),
                 _buildDivider(),
                 Obx(
-                  () => _buildInfoRow("OS System", controller.deviceOs.value),
-                ),
-                _buildDivider(),
-                Obx(
-                  () =>
-                      _buildInfoRow("Product ID", controller.productType.value),
+                  () => _buildProfileItem(
+                    Icons.android,
+                    "OS System",
+                    controller.deviceOs.value,
+                  ),
                 ),
               ],
             ),
@@ -122,68 +149,79 @@ class ProfileTab extends StatelessWidget {
               onPressed: controller.logout,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red[50],
-                foregroundColor: Colors.red, // Teks Merah
+                foregroundColor: Colors.red,
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                  side: BorderSide(color: Colors.red),
+                  borderRadius: BorderRadius.circular(16.r),
                 ),
               ),
-              icon: Icon(Icons.logout),
+              icon: const Icon(Icons.logout),
               label: Text(
                 "Keluar Aplikasi",
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
               ),
             ),
           ),
-
-          SizedBox(height: 40.h), // Spacing bawah
+          SizedBox(height: 40.h),
         ],
       ),
     );
   }
 
-  // --- HELPER WIDGETS (Biar kodingan rapi) ---
-
   Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 8.h, left: 4.w),
+      padding: EdgeInsets.only(bottom: 12.h, left: 4.w),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
           title,
           style: TextStyle(
-            fontSize: 14.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeight.bold,
-            color: Colors.grey[700],
+            color: primaryColor,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildProfileItem(IconData icon, String label, String value) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
+      padding: EdgeInsets.symmetric(vertical: 12.h),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+          Container(
+            padding: EdgeInsets.all(10.w),
+            decoration: BoxDecoration(
+              color: mintGrean.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, size: 20.sp, color: primaryColor),
           ),
           SizedBox(width: 16.w),
+
+          // Data
           Expanded(
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              ),
-              overflow: TextOverflow.ellipsis,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(fontSize: 11.sp, color: Colors.grey[600]),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
         ],
@@ -192,7 +230,7 @@ class ProfileTab extends StatelessWidget {
   }
 
   Widget _buildDivider() {
-    return Divider(color: Colors.grey[200], thickness: 1);
+    return Divider(color: Colors.grey[100], thickness: 1, height: 1);
   }
 
   BoxDecoration _boxDecoration() {
@@ -203,7 +241,7 @@ class ProfileTab extends StatelessWidget {
         BoxShadow(
           color: Colors.black.withOpacity(0.05),
           blurRadius: 10,
-          offset: Offset(0, 4),
+          offset: const Offset(0, 4),
         ),
       ],
     );
