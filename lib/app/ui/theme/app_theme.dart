@@ -6,7 +6,7 @@ import 'package:salesforce_app/app/ui/theme/app_constants.dart';
 
 const Color primaryColor = Color(0xFF096835);
 const Color mintGrean = Color(0xFF83A887);
-const Color backgroundColor = Color(0xFFEDF4EE);
+const Color backgroundColor = Color(0xFFF8FAF9);
 const Color noFocused = Color(0xFFD9D9D9);
 
 class AppTheme {

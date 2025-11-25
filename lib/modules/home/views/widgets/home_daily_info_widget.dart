@@ -19,143 +19,152 @@ class HomeDailyInfo extends StatelessWidget {
           ),
         ),
         SizedBox(height: 12.h),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Rangkuman Informasi Harian
-            Expanded(
-              flex: 3,
-              child: Container(
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Column(
-                  children: [
-                    _buildRowItem(
-                      Icons.calendar_month,
-                      "Jadwal kunjungan",
-                      "Total jadwal kunjungan yang ada",
-                      "5",
-                    ),
-                    SizedBox(height: 12.h),
-                    _buildRowItem(
-                      Icons.check_circle_outline,
-                      "Kunjungan selesai",
-                      "Total kunjungan yang telah dilakukan",
-                      "5",
-                    ),
-                    SizedBox(height: 12.h),
-                    _buildRowItem(
-                      Icons.receipt_long,
-                      "Banyak pesanan",
-                      "Total jumlah pesanan yang ada",
-                      "5",
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(width: 12.w),
 
-            // Absensi
-            Expanded(
-              flex: 2,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 12.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      "Jam\nMasuk",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      "07:28",
-                      style: TextStyle(
-                        fontFamily: 'LuckiestGuy',
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: primaryColor,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Divider(),
-                    SizedBox(height: 8.h),
-                    Text(
-                      "Jam\nKeluar",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      "BELUM",
-                      style: TextStyle(
-                        fontFamily: 'LuckiestGuy',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[300],
-                      ),
-                    ),
-                  ],
-                ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
+          decoration: _boxDecoration(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildAttendanceItem("Jam Masuk", "07:28", primaryColor),
+              Container(height: 40.h, width: 1.w, color: Colors.grey[300]),
+              _buildAttendanceItem("Jam Keluar", "--:--", Colors.grey),
+            ],
+          ),
+        ),
+
+        SizedBox(height: 16.h),
+
+        Container(
+          padding: EdgeInsets.all(20.w),
+          decoration: _boxDecoration(),
+          child: Column(
+            children: [
+              _buildStatRow(
+                icon: Icons.calendar_month,
+                title: "Jadwal kunjungan",
+                subtitle: "Total jadwal kunjungan yang ada",
+                value: "5",
               ),
-            ),
-          ],
+              _buildDivider(),
+              _buildStatRow(
+                icon: Icons.check_circle_outline,
+                title: "Kunjungan selesai",
+                subtitle: "Total kunjungan yang telah dilakukan",
+                value: "3",
+              ),
+              _buildDivider(),
+              _buildStatRow(
+                icon: Icons.receipt_long,
+                title: "Banyak pesanan",
+                subtitle: "Total jumlah pesanan yang ada",
+                value: "12",
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildRowItem(
-    IconData icon,
-    String title,
-    String subtitle,
-    String value,
-  ) {
+  Widget _buildAttendanceItem(String label, String time, Color color) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Icon(
+              Icons.access_time_filled,
+              size: 16.sp,
+              color: Colors.grey[400],
+            ),
+            SizedBox(width: 6.w),
+            Text(
+              label,
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+            ),
+          ],
+        ),
+        SizedBox(height: 6.h),
+        Text(
+          time,
+          style: TextStyle(
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
+            color: color == Colors.grey ? Colors.grey[400] : primaryColor,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatRow({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required String value,
+  }) {
     return Row(
       children: [
-        CircleAvatar(
-          radius: 16.r,
-          backgroundColor: mintGrean,
-          child: Icon(icon, size: 16.sp, color: Colors.black54),
+        Container(
+          padding: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: mintGrean.withOpacity(0.3),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, size: 20.sp, color: Colors.black54),
         ),
-        SizedBox(width: 8.w),
+        SizedBox(width: 16.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
               ),
+              SizedBox(height: 2.h),
               Text(
                 subtitle,
-                style: TextStyle(fontSize: 8.sp, color: Colors.grey),
+                style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
                 maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
         ),
+
         Text(
           value,
           style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
+            fontSize: 24.sp,
+            fontWeight: FontWeight.w900,
             color: primaryColor,
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDivider() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 12.h),
+      child: Divider(color: Colors.grey[200], thickness: 1),
+    );
+  }
+
+  BoxDecoration _boxDecoration() {
+    return BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16.r),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.05),
+          blurRadius: 10,
+          offset: const Offset(0, 4),
         ),
       ],
     );

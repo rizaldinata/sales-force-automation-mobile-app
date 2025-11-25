@@ -17,55 +17,55 @@ class DashboardTab extends StatelessWidget {
         "name": "Sarung Atlas Idaman",
         "variant": "555 Kembang",
         "image":
-            "https://images.tokopedia.net/img/cache/700/VqbcmM/2022/9/5/9e3b7b25-1e3e-4770-9838-83a31525925d.jpg", // Contoh gambar
+            "https://www.sarungbhs.co.id/bima-themes/www/bhs/bima-assets/new/images/sarungsignature.png",
       },
       {
         "name": "Sarung BHS Classic",
         "variant": "Gold Motif",
         "image":
-            "https://dynamic.zacdn.com/J_Yygv6n-E_i5O_GqA-gXqO2y5U=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/bhs-3135-9653634-1.jpg",
+            "https://www.sarungbhs.co.id/bima-themes/www/bhs/bima-assets/new/images/sarungsignature.png",
       },
       {
         "name": "Sarung BHS Masterpiece",
         "variant": "Hujan Gerimis",
         "image":
-            "https://down-id.img.susercontent.com/file/id-11134207-7r98o-lsm6w25f82w0ce",
+            "https://www.sarungbhs.co.id/bima-themes/www/bhs/bima-assets/new/images/sarungsignature.png",
       },
       {
         "name": "Sarung Atlas Idaman",
         "variant": "555 Kembang",
         "image":
-            "https://images.tokopedia.net/img/cache/700/VqbcmM/2022/9/5/9e3b7b25-1e3e-4770-9838-83a31525925d.jpg", // Contoh gambar
+            "https://www.sarungbhs.co.id/bima-themes/www/bhs/bima-assets/new/images/sarungsignature.png",
       },
       {
         "name": "Sarung BHS Classic",
         "variant": "Gold Motif",
         "image":
-            "https://dynamic.zacdn.com/J_Yygv6n-E_i5O_GqA-gXqO2y5U=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/bhs-3135-9653634-1.jpg",
+            "https://www.sarungbhs.co.id/bima-themes/www/bhs/bima-assets/new/images/sarungsignature.png",
       },
       {
         "name": "Sarung BHS Masterpiece",
         "variant": "Hujan Gerimis",
         "image":
-            "https://down-id.img.susercontent.com/file/id-11134207-7r98o-lsm6w25f82w0ce",
+            "https://www.sarungbhs.co.id/bima-themes/www/bhs/bima-assets/new/images/sarungsignature.png",
       },
       {
         "name": "Sarung Atlas Idaman",
         "variant": "555 Kembang",
         "image":
-            "https://images.tokopedia.net/img/cache/700/VqbcmM/2022/9/5/9e3b7b25-1e3e-4770-9838-83a31525925d.jpg", // Contoh gambar
+            "https://www.sarungbhs.co.id/bima-themes/www/bhs/bima-assets/new/images/sarungsignature.png",
       },
       {
         "name": "Sarung BHS Classic",
         "variant": "Gold Motif",
         "image":
-            "https://dynamic.zacdn.com/J_Yygv6n-E_i5O_GqA-gXqO2y5U=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/bhs-3135-9653634-1.jpg",
+            "https://www.sarungbhs.co.id/bima-themes/www/bhs/bima-assets/new/images/sarungsignature.png",
       },
       {
         "name": "Sarung BHS Masterpiece",
         "variant": "Hujan Gerimis",
         "image":
-            "https://down-id.img.susercontent.com/file/id-11134207-7r98o-lsm6w25f82w0ce",
+            "https://www.sarungbhs.co.id/bima-themes/www/bhs/bima-assets/new/images/sarungsignature.png",
       },
     ];
 
