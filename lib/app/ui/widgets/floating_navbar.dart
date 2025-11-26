@@ -24,8 +24,8 @@ class FloatingNavBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(35.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 15,
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 20,
             offset: const Offset(0, 10),
           ),
         ],
@@ -43,10 +43,12 @@ class FloatingNavBar extends StatelessWidget {
 
   Widget _buildItem(IconData icon, int index) {
     bool isSelected = selectedIndex == index;
+
     return GestureDetector(
       onTap: () => onTap(index),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeOutQuint,
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
           color: isSelected
@@ -54,10 +56,20 @@ class FloatingNavBar extends StatelessWidget {
               : Colors.transparent,
           shape: BoxShape.circle,
         ),
-        child: Icon(
-          icon,
-          color: Colors.white,
-          size: isSelected ? 28.sp : 24.sp,
+        child: TweenAnimationBuilder<double>(
+          tween: Tween<double>(begin: 1.0, end: isSelected ? 1.2 : 1.0),
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeOutBack,
+          builder: (context, scale, child) {
+            return Transform.scale(
+              scale: scale,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 350),
+                opacity: isSelected ? 1.0 : 0.6,
+                child: Icon(icon, color: Colors.white, size: 24.sp),
+              ),
+            );
+          },
         ),
       ),
     );
