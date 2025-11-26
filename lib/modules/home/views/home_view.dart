@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
+import 'package:salesforce_app/app/ui/widgets/floating_navbar.dart';
 import 'package:salesforce_app/modules/home/controllers/home_controller.dart';
 import 'package:salesforce_app/modules/home/controllers/visit_controller.dart';
 import 'package:salesforce_app/app/ui/widgets/keep_alive_wrapper.dart';
@@ -38,39 +38,20 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
 
-      bottomNavigationBar: Container(
-        height: 80.h,
-        decoration: const BoxDecoration(
-          color: primaryColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(0),
-            topRight: Radius.circular(0),
-          ),
+      bottomNavigationBar: Obx(
+        () => FloatingNavBar(
+          selectedIndex: controller.tabIndex.value,
+          onTap: (index) {
+            controller.changeTabIndex(index);
+            if (index == 1) {
+              if (Get.isRegistered<VisitController>()) {
+                Get.find<VisitController>().onTabOpened();
+              } else {
+                Get.put(VisitController()).onTabOpened();
+              }
+            }
+          },
         ),
-        child: Obx(
-          () => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(icon: Icons.home_filled, index: 0),
-              _buildNavItem(icon: Icons.flight_takeoff, index: 1),
-              _buildNavItem(icon: Icons.account_circle, index: 2),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem({required IconData icon, required int index}) {
-    bool isSelected = controller.tabIndex.value == index;
-    return IconButton(
-      onPressed: () {
-        controller.changeTabIndex(index);
-      },
-      icon: Icon(
-        icon,
-        color: isSelected ? Colors.white : Colors.white.withOpacity(0.4),
-        size: 32.sp,
       ),
     );
   }
