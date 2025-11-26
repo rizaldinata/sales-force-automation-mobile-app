@@ -1,13 +1,13 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/modules/home/controllers/home_controller.dart';
-import 'package:salesforce_app/modules/home/views/tabs/profile_tab.dart';
-import 'package:salesforce_app/modules/home/views/tabs/visit_tab.dart';
+import 'package:salesforce_app/modules/home/controllers/visit_controller.dart';
+import 'package:salesforce_app/app/ui/widgets/keep_alive_wrapper.dart';
 import 'tabs/dashboard_tab.dart';
+import 'tabs/profile_tab.dart';
+import 'tabs/visit_tab.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -17,17 +17,27 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: Obx(
-          () => IndexedStack(
-            index: controller.tabIndex.value,
-            children: [
-              const DashboardTab(),
-              const VisitTab(),
-              const ProfileTab(),
-            ],
-          ),
+        child: PageView(
+          controller: controller.pageController,
+          onPageChanged: (index) {
+            controller.onPageSwipe(index);
+
+            if (index == 1) {
+              if (Get.isRegistered<VisitController>()) {
+                Get.find<VisitController>().onTabOpened();
+              } else {
+                Get.put(VisitController()).onTabOpened();
+              }
+            }
+          },
+          children: const [
+            KeepAliveWrapper(child: DashboardTab()),
+            KeepAliveWrapper(child: VisitTab()),
+            KeepAliveWrapper(child: ProfileTab()),
+          ],
         ),
       ),
+
       bottomNavigationBar: Container(
         height: 80.h,
         decoration: const BoxDecoration(

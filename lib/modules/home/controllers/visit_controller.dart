@@ -65,6 +65,12 @@ class VisitController extends GetxController {
     }
   }
 
+  void onTabOpened() {
+    if (currentLat.value == 0.0 && currentLng.value == 0.0) {
+      getCurrentLocation();
+    }
+  }
+
   void handleButtonAction() {
     if (visitStatus.value == 0) {
       _checkIn();
