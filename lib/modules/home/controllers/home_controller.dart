@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salesforce_app/app/routes/app_routes.dart';
+import 'package:salesforce_app/modules/home/controllers/profile_controller.dart';
+import 'package:salesforce_app/modules/home/controllers/visit_controller.dart';
 
 class HomeController extends GetxController {
   var tabIndex = 0.obs;
@@ -11,6 +13,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    tabIndex.value = 0;
     pageController = PageController(initialPage: 0);
   }
 
@@ -43,6 +46,10 @@ class HomeController extends GetxController {
 
   void logout() {
     tabIndex.value = 0;
+
+    Get.delete<HomeController>(force: true);
+    Get.delete<VisitController>(force: true);
+    Get.delete<ProfileController>(force: true);
     Get.offAllNamed(AppRoutes.login);
   }
 }

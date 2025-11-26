@@ -23,11 +23,7 @@ class HomeView extends GetView<HomeController> {
             controller.onPageSwipe(index);
 
             if (index == 1) {
-              if (Get.isRegistered<VisitController>()) {
-                Get.find<VisitController>().onTabOpened();
-              } else {
-                Get.put(VisitController()).onTabOpened();
-              }
+              Get.find<VisitController>().onTabOpened();
             }
           },
           children: const [
@@ -44,11 +40,7 @@ class HomeView extends GetView<HomeController> {
           onTap: (index) {
             controller.changeTabIndex(index);
             if (index == 1) {
-              if (Get.isRegistered<VisitController>()) {
-                Get.find<VisitController>().onTabOpened();
-              } else {
-                Get.put(VisitController()).onTabOpened();
-              }
+              Get.find<VisitController>().onTabOpened();
             }
           },
         ),

@@ -17,7 +17,7 @@ class VisitTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(VisitController());
+    final controller = Get.find<VisitController>();
     String todayDate = DateFormat(
       'EEEE, d MMMM yyyy',
       'id_ID',

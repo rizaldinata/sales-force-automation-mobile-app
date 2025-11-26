@@ -32,9 +32,6 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.light,
           initialRoute: AppRoutes.login,
           getPages: AppPages.routes,
-          initialBinding: BindingsBuilder(() {
-            Get.put(HomeController(), permanent: true);
-          }),
         );
       },
     );
