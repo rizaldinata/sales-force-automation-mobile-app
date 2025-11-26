@@ -34,8 +34,7 @@ class ProfileController extends GetxController {
     try {
       if (Platform.isAndroid) {
         AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-        deviceName.value =
-            "${androidInfo.brand} ${androidInfo.model}"; // Samsung SM-A50
+        deviceName.value = "${androidInfo.brand} ${androidInfo.model}";
         deviceOs.value = "Android ${androidInfo.version.release}";
         productType.value = androidInfo.product;
       } else if (Platform.isIOS) {

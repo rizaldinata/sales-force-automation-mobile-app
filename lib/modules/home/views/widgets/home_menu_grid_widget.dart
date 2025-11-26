@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
+import 'package:salesforce_app/app/ui/widgets/section_title.dart';
 
 class HomeMenuGrid extends StatelessWidget {
   HomeMenuGrid({super.key});
@@ -25,15 +26,7 @@ class HomeMenuGrid extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Menu fitur",
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: primaryColor,
-          ),
-        ),
-        SizedBox(height: 12.h),
+        const SectionTitle(title: "Menu fitur"),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

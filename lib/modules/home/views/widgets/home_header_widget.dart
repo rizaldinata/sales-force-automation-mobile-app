@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:salesforce_app/app/ui/theme/app_theme.dart'; // Import warna tadi
+import 'package:salesforce_app/modules/home/controllers/home_controller.dart';
+import 'package:salesforce_app/app/ui/widgets/primary_header_card.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
   const HomeHeaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        color: primaryColor,
-        borderRadius: BorderRadius.circular(24.r),
-      ),
+    Get.find<HomeController>();
+
+    return PrimaryHeaderCard(
       child: Column(
         children: [
-          // Profil
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Column(
@@ -31,22 +29,36 @@ class HomeHeaderWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    SizedBox(height: 4.h),
                     Text(
                       "Magang",
-                      style: TextStyle(color: Colors.white70, fontSize: 14.sp),
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.8),
+                        fontSize: 14.sp,
+                      ),
                     ),
                   ],
                 ),
               ),
-              // Avatar Placeholder
-              CircleAvatar(radius: 24.r, backgroundColor: Colors.grey[300]),
+
+              Container(
+                padding: EdgeInsets.all(4.w),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: CircleAvatar(
+                  radius: 24.r,
+                  backgroundColor: Colors.grey[300],
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 16.h),
-          Divider(color: Colors.white24, thickness: 1),
+
+          SizedBox(height: 20.h),
+          Divider(color: Colors.white.withOpacity(0.2), thickness: 1),
           SizedBox(height: 16.h),
 
-          // Info Pesanan
           Row(
             children: [
               _buildStatItem(
@@ -54,17 +66,15 @@ class HomeHeaderWidget extends StatelessWidget {
                 "Rp 55.000.000",
                 Icons.account_balance_wallet,
               ),
+
               Container(
                 height: 30.h,
                 width: 1,
-                color: Colors.white24,
+                color: Colors.white.withOpacity(0.2),
                 margin: EdgeInsets.symmetric(horizontal: 16.w),
               ),
-              _buildStatItem(
-                "Pesanan bulan ini:",
-                "Rp 55.000.000",
-                Icons.wallet,
-              ),
+
+              _buildStatItem("Performance bulan ini:", "95%", Icons.wallet),
             ],
           ),
         ],
@@ -79,7 +89,10 @@ class HomeHeaderWidget extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(color: Colors.white70, fontSize: 10.sp),
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 10.sp,
+            ),
           ),
           SizedBox(height: 4.h),
           Row(
@@ -90,9 +103,9 @@ class HomeHeaderWidget extends StatelessWidget {
                 child: Text(
                   value,
                   style: TextStyle(
-                    color: Colors.white,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

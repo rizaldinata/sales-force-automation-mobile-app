@@ -6,6 +6,9 @@ import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/modules/home/controllers/visit_controller.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:salesforce_app/app/ui/widgets/primary_header_card.dart';
+import 'package:salesforce_app/app/ui/widgets/custom_dropdown.dart';
+import 'package:salesforce_app/app/ui/widgets/section_title.dart';
 
 class VisitTab extends StatelessWidget {
   const VisitTab({super.key});
@@ -13,7 +16,6 @@ class VisitTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(VisitController());
-
     String todayDate = DateFormat(
       'EEEE, d MMMM yyyy',
       'id_ID',
@@ -24,19 +26,7 @@ class VisitTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            padding: EdgeInsets.all(24.w),
-            decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.circular(24.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
+          PrimaryHeaderCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -59,7 +49,7 @@ class VisitTab extends StatelessWidget {
                           todayDate,
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.8),
-                            fontSize: 12.sp,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ],
@@ -81,15 +71,21 @@ class VisitTab extends StatelessWidget {
                 SizedBox(height: 20.h),
                 Divider(color: Colors.white.withOpacity(0.2), thickness: 1),
                 SizedBox(height: 16.h),
+
+                // Waktu Datang & Pulang
                 IntrinsicHeight(
                   child: Row(
                     children: [
                       _buildTimeInfo("Waktu Datang", controller.waktuDatang),
-                      VerticalDivider(
+
+                      // Divider Tengah
+                      Container(
+                        height: 30.h,
+                        width: 1,
                         color: Colors.white.withOpacity(0.2),
-                        thickness: 1,
-                        width: 32.w,
+                        margin: EdgeInsets.symmetric(horizontal: 16.w),
                       ),
+
                       _buildTimeInfo("Waktu Pulang", controller.waktuPulang),
                     ],
                   ),
@@ -99,10 +95,9 @@ class VisitTab extends StatelessWidget {
           ),
 
           SizedBox(height: 28.h),
-
-          _buildSectionHeader(
-            "Titik Lokasi",
-            "Pastikan sesuai lokasi toko saat ini",
+          const SectionTitle(
+            title: "Titik Lokasi",
+            subtitle: "Pastikan sesuai lokasi toko saat ini",
           ),
 
           Container(
@@ -128,7 +123,6 @@ class VisitTab extends StatelessWidget {
                     child: const Center(child: CircularProgressIndicator()),
                   );
                 }
-
                 return FlutterMap(
                   mapController: controller.mapController,
                   options: MapOptions(
@@ -168,10 +162,11 @@ class VisitTab extends StatelessWidget {
           ),
 
           SizedBox(height: 28.h),
-
-          _buildSectionHeader("Data Outlet", "Pilih toko tujuan kunjungan"),
-
-          _buildDropdown(
+          const SectionTitle(
+            title: "Data Outlet",
+            subtitle: "Pilih toko tujuan kunjungan",
+          ),
+          CustomDropdown(
             label: "Nama Outlet",
             hint: "Pilih Outlet",
             items: controller.outletList,
@@ -179,10 +174,8 @@ class VisitTab extends StatelessWidget {
             onChanged: (val) => controller.selectedOutlet.value = val,
             icon: Icons.store_mall_directory,
           ),
-
           SizedBox(height: 16.h),
-
-          _buildDropdown(
+          CustomDropdown(
             label: "Jenis Outlet",
             hint: "Pilih Jenis",
             items: controller.outletTypeList,
@@ -190,7 +183,6 @@ class VisitTab extends StatelessWidget {
             onChanged: (val) => controller.selectedOutletType.value = val,
             icon: Icons.category,
           ),
-
           SizedBox(height: 40.h),
 
           SizedBox(
@@ -201,7 +193,6 @@ class VisitTab extends StatelessWidget {
               Color buttonColor = primaryColor;
               bool isDisabled = false;
               IconData btnIcon = Icons.login;
-
               if (controller.visitStatus.value == 1) {
                 buttonText = "Check Out";
                 buttonColor = Colors.orange[800]!;
@@ -212,7 +203,6 @@ class VisitTab extends StatelessWidget {
                 btnIcon = Icons.check_circle;
                 isDisabled = true;
               }
-
               return ElevatedButton.icon(
                 onPressed: isDisabled ? null : controller.handleButtonAction,
                 style: ElevatedButton.styleFrom(
@@ -243,128 +233,33 @@ class VisitTab extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title, String subtitle) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: primaryColor,
-          ),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          subtitle,
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
-        ),
-        SizedBox(height: 12.h),
-      ],
-    );
-  }
-
+  // --- HELPER WIDGET UPDATED ---
   Widget _buildTimeInfo(String label, RxString value) {
     return Expanded(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             label,
             style: TextStyle(
               color: Colors.white.withOpacity(0.8),
-              fontSize: 11.sp,
+              fontSize: 10.sp,
             ),
           ),
-          SizedBox(height: 6.h),
+          SizedBox(height: 4.h),
           Obx(
             () => Text(
               value.value,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 20.sp,
+                fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
-                letterSpacing: 1,
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildDropdown({
-    required String label,
-    required String hint,
-    required List<String> items,
-    required Rxn<String> selectedValue,
-    required Function(String?) onChanged,
-    required IconData icon,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 4.w, bottom: 6.h),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[700],
-            ),
-          ),
-        ),
-        Obx(
-          () => Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(color: Colors.grey[300]!),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: selectedValue.value,
-                hint: Row(
-                  children: [
-                    Icon(icon, size: 18.sp, color: Colors.grey[400]),
-                    SizedBox(width: 12.w),
-                    Text(
-                      hint,
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                  ],
-                ),
-                isExpanded: true,
-                icon: Icon(Icons.keyboard_arrow_down, color: primaryColor),
-                borderRadius: BorderRadius.circular(16.r),
-                items: items.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: TextStyle(fontSize: 14.sp, color: Colors.black87),
-                    ),
-                  );
-                }).toList(),
-                onChanged: onChanged,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

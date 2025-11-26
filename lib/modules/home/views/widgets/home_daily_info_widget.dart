@@ -1,6 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
+import 'package:salesforce_app/app/ui/widgets/section_title.dart';
 
 class HomeDailyInfo extends StatelessWidget {
   const HomeDailyInfo({super.key});
@@ -10,15 +13,7 @@ class HomeDailyInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Informasi harian",
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: primaryColor,
-          ),
-        ),
-        SizedBox(height: 12.h),
+        const SectionTitle(title: "Informasi harian"),
 
         Container(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),

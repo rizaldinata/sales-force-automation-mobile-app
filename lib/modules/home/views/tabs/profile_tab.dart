@@ -1,7 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
+import 'package:salesforce_app/app/ui/widgets/section_title.dart';
 import 'package:salesforce_app/modules/home/controllers/profile_controller.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -73,7 +76,7 @@ class ProfileTab extends StatelessWidget {
 
           SizedBox(height: 32.h),
 
-          _buildSectionHeader("Informasi Pribadi"),
+          SectionTitle(title: "Informasi Pribadi"),
           Container(
             padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
             decoration: _boxDecoration(),
@@ -108,7 +111,7 @@ class ProfileTab extends StatelessWidget {
 
           SizedBox(height: 24.h),
 
-          _buildSectionHeader("Informasi Perangkat"),
+          SectionTitle(title: "Informasi Perangkat"),
           Container(
             padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
             decoration: _boxDecoration(),
@@ -165,23 +168,6 @@ class ProfileTab extends StatelessWidget {
           ),
           SizedBox(height: 40.h),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12.h, left: 4.w),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: primaryColor,
-          ),
-        ),
       ),
     );
   }
