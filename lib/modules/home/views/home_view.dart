@@ -16,12 +16,14 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      key: UniqueKey(),
+      extendBody: true,
       body: SafeArea(
+        bottom: false,
         child: PageView(
           controller: controller.pageController,
           onPageChanged: (index) {
             controller.onPageSwipe(index);
-
             if (index == 1) {
               Get.find<VisitController>().onTabOpened();
             }

@@ -122,7 +122,7 @@ class LoginView extends GetView<LoginController> {
                         Obx(
                           () => PrimaryButton(
                             text: "MASUK",
-                            onPressed: controller.loginManual,
+                            onPressed: controller.login,
                             isLoading: controller.isLoading.value,
                           ),
                         ),

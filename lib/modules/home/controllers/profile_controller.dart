@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:salesforce_app/app/routes/app_routes.dart';
 import 'package:salesforce_app/modules/home/controllers/home_controller.dart';
 
 class ProfileController extends GetxController {

@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,6 +53,9 @@ class HomeHeaderWidget extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 24.r,
                   backgroundColor: Colors.grey[300],
+                  backgroundImage: const CachedNetworkImageProvider(
+                    "https://i.pravatar.cc/300",
+                  ),
                 ),
               ),
             ],

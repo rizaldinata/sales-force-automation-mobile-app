@@ -229,13 +229,12 @@ class VisitTab extends StatelessWidget {
               );
             }),
           ),
-          SizedBox(height: 40.h),
+          SizedBox(height: 120.h),
         ],
       ),
     );
   }
 
-  // --- HELPER WIDGET UPDATED ---
   Widget _buildTimeInfo(String label, RxString value) {
     return Expanded(
       child: Column(

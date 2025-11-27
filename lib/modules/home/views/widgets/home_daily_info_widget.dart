@@ -1,9 +1,8 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/app/ui/widgets/section_title.dart';
+import 'package:salesforce_app/modules/home/views/widgets/statistic_item_widget.dart';
 
 class HomeDailyInfo extends StatelessWidget {
   const HomeDailyInfo({super.key});
@@ -35,21 +34,21 @@ class HomeDailyInfo extends StatelessWidget {
           decoration: _boxDecoration(),
           child: Column(
             children: [
-              _buildStatRow(
+              const StatisticItemWidget(
                 icon: Icons.calendar_month,
                 title: "Jadwal kunjungan",
                 subtitle: "Total jadwal kunjungan yang ada",
                 value: "5",
               ),
               _buildDivider(),
-              _buildStatRow(
+              const StatisticItemWidget(
                 icon: Icons.check_circle_outline,
                 title: "Kunjungan selesai",
                 subtitle: "Total kunjungan yang telah dilakukan",
                 value: "3",
               ),
               _buildDivider(),
-              _buildStatRow(
+              const StatisticItemWidget(
                 icon: Icons.receipt_long,
                 title: "Banyak pesanan",
                 subtitle: "Total jumlah pesanan yang ada",
@@ -86,58 +85,6 @@ class HomeDailyInfo extends StatelessWidget {
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             color: color == Colors.grey ? Colors.grey[400] : primaryColor,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatRow({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required String value,
-  }) {
-    return Row(
-      children: [
-        Container(
-          padding: EdgeInsets.all(10.w),
-          decoration: BoxDecoration(
-            color: mintGrean.withOpacity(0.3),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, size: 20.sp, color: Colors.black54),
-        ),
-        SizedBox(width: 16.w),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              SizedBox(height: 2.h),
-              Text(
-                subtitle,
-                style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 24.sp,
-            fontWeight: FontWeight.w900,
-            color: primaryColor,
           ),
         ),
       ],
