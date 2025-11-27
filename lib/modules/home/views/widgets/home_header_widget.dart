@@ -112,7 +112,6 @@ class HomeHeaderWidget extends StatelessWidget {
           ),
           SizedBox(width: 8.w),
 
-          // Teks Data
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

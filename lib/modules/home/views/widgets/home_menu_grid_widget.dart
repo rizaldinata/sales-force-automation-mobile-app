@@ -33,8 +33,8 @@ class HomeMenuGrid extends GetView<HomeController> {
               final menu = controller.menus[index];
               return InkWell(
                 onTap: () {
-                  if (menu.actionCode == 1) {
-                    controller.changeTabIndex(1);
+                  if (menu.actionCode != null) {
+                    controller.changeTabIndex(menu.actionCode!);
                   }
                 },
                 child: Column(

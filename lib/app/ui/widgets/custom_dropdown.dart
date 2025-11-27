@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
-import 'package:salesforce_app/app/ui/theme/app_constants.dart'; // Pakai Konstanta
+import 'package:salesforce_app/app/ui/theme/app_constants.dart';
 
 class CustomDropdown extends StatelessWidget {
   final String label;

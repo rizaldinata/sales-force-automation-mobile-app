@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:salesforce_app/app/data/models/menu_mode.dart';
+import 'package:salesforce_app/app/data/models/menu_model.dart';
 import 'package:salesforce_app/app/data/models/product_model.dart';
 import 'package:salesforce_app/app/routes/app_routes.dart';
 import 'package:salesforce_app/modules/home/controllers/profile_controller.dart';
@@ -13,7 +13,7 @@ class HomeController extends GetxController {
   bool _isAnimating = false;
 
   final menus = <MenuModel>[
-    MenuModel(label: "Outlet", icon: Icons.store_mall_directory),
+    MenuModel(label: "Outlet", icon: Icons.store_mall_directory, actionCode: 3),
     MenuModel(label: "Presensi v2", icon: Icons.fingerprint),
     MenuModel(label: "Survey toko", icon: Icons.assignment_turned_in),
     MenuModel(label: "Pesanan", icon: Icons.shopping_cart),
@@ -94,6 +94,11 @@ class HomeController extends GetxController {
   }
 
   void changeTabIndex(int index) async {
+    if (index == 3) {
+      Get.toNamed(AppRoutes.outlet);
+      return;
+    }
+
     if (_isAnimating || tabIndex.value == index) return;
 
     _isAnimating = true;
