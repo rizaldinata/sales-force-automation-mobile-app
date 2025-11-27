@@ -21,6 +21,7 @@ class DashboardTab extends GetView<HomeController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const HomeHeaderWidget(),
+
           SizedBox(height: 24.h),
 
           HomeMenuGrid(),
@@ -54,7 +55,7 @@ class DashboardTab extends GetView<HomeController> {
 
           SizedBox(height: 24.h),
           const HomeDailyInfo(),
-          SizedBox(height: 120.h),
+          SizedBox(height: 100.h),
         ],
       ),
     );

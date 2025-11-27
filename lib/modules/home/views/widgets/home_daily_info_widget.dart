@@ -1,5 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:salesforce_app/app/ui/theme/app_constants.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/app/ui/widgets/section_title.dart';
 import 'package:salesforce_app/modules/home/views/widgets/statistic_item_widget.dart';
@@ -101,7 +104,7 @@ class HomeDailyInfo extends StatelessWidget {
   BoxDecoration _boxDecoration() {
     return BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(16.r),
+      borderRadius: BorderRadius.circular(AppRadius.lg),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.05),

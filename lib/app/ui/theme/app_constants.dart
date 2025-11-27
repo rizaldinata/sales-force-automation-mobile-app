@@ -1,7 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppSpacing {
-  // Spacing konsisten
   static double spacing4 = 4.h;
   static double spacing8 = 8.h;
   static double spacing12 = 12.h;
@@ -15,7 +14,6 @@ class AppSpacing {
 }
 
 class AppRadius {
-  // Border radius konsisten
   static double sm = 8.r;
   static double md = 12.r;
   static double lg = 16.r;
@@ -24,7 +22,6 @@ class AppRadius {
 }
 
 class AppFontSize {
-  // Font size konsisten
   static double xs = 11.sp;
   static double sm = 13.sp;
   static double md = 14.sp;
@@ -35,7 +32,7 @@ class AppFontSize {
 }
 
 class AppSizes {
-  static double inputHeight = 50.h; // Tinggi untuk TextField & Button
+  static double inputHeight = 50.h;
   static double iconSize = 20.sp;
   static double iconSizeLarge = 24.sp;
 }

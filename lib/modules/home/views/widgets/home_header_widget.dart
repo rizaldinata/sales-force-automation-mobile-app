@@ -14,11 +14,15 @@ class HomeHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.find<HomeController>();
 
+    const String photoUrl = "https://i.pravatar.cc/300";
+
     return PrimaryHeaderCard(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Column(
@@ -30,14 +34,15 @@ class HomeHeaderWidget extends StatelessWidget {
                         color: Colors.white,
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
+                        height: 1.2,
                       ),
                     ),
-                    SizedBox(height: 4.h),
+                    SizedBox(height: 2.h),
                     Text(
                       "Magang",
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.8),
-                        fontSize: 14.sp,
+                        fontSize: 13.sp,
                       ),
                     ),
                   ],
@@ -45,25 +50,29 @@ class HomeHeaderWidget extends StatelessWidget {
               ),
 
               Container(
-                padding: EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(3.w),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   shape: BoxShape.circle,
                 ),
                 child: CircleAvatar(
-                  radius: 24.r,
+                  radius: 22.r,
                   backgroundColor: Colors.grey[300],
-                  backgroundImage: const CachedNetworkImageProvider(
-                    "https://i.pravatar.cc/300",
-                  ),
+                  backgroundImage: const CachedNetworkImageProvider(photoUrl),
                 ),
               ),
             ],
           ),
 
-          SizedBox(height: 20.h),
-          Divider(color: Colors.white.withOpacity(0.2), thickness: 1),
-          SizedBox(height: 16.h),
+          SizedBox(height: 12.h),
+
+          Divider(
+            color: Colors.white.withOpacity(0.2),
+            thickness: 1,
+            height: 1,
+          ),
+
+          SizedBox(height: 12.h),
 
           Row(
             children: [
@@ -74,13 +83,13 @@ class HomeHeaderWidget extends StatelessWidget {
               ),
 
               Container(
-                height: 30.h,
+                height: 24.h,
                 width: 1,
                 color: Colors.white.withOpacity(0.2),
-                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                margin: EdgeInsets.symmetric(horizontal: 12.w),
               ),
 
-              _buildStatItem("Performance bulan ini:", "95%", Icons.wallet),
+              _buildStatItem("Performance:", "95%", Icons.trending_up),
             ],
           ),
         ],
@@ -90,33 +99,46 @@ class HomeHeaderWidget extends StatelessWidget {
 
   Widget _buildStatItem(String label, String value, IconData icon) {
     return Expanded(
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
-              fontSize: 10.sp,
+          Container(
+            padding: EdgeInsets.all(6.w),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(8.r),
             ),
+            child: Icon(icon, color: Colors.white, size: 16.sp),
           ),
-          SizedBox(height: 4.h),
-          Row(
-            children: [
-              Icon(icon, color: Colors.white, size: 16.sp),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: Text(
-                  value,
+          SizedBox(width: 8.w),
+
+          // Teks Data
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
                   style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 10.sp,
+                    height: 1.0,
                   ),
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+                SizedBox(height: 2.h),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    height: 1.2,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

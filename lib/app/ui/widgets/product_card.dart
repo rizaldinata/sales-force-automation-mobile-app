@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:salesforce_app/app/ui/theme/app_constants.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductCard extends StatelessWidget {
   final String name;
@@ -21,7 +23,7 @@ class ProductCard extends StatelessWidget {
     return Container(
       width: 140.w,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         color: Colors.white,
         boxShadow: [
           BoxShadow(
@@ -32,28 +34,41 @@ class ProductCard extends StatelessWidget {
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              flex: 3,
-              child: Image.network(
-                imageUrl,
+              flex: 4,
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (c, e, s) => Container(
+                placeholder: (context, url) => Container(
+                  color: Colors.grey[100],
+                  child: const Center(
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
                   color: Colors.grey[200],
-                  child: const Icon(
-                    Icons.image_not_supported,
-                    color: Colors.grey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.broken_image, color: Colors.grey, size: 24.sp),
+                      SizedBox(height: 4.h),
+                      Text(
+                        "Error",
+                        style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
-                padding: EdgeInsets.all(10.w),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                 color: mintGrean,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

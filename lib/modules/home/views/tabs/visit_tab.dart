@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:salesforce_app/app/ui/theme/app_constants.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
+import 'package:salesforce_app/app/ui/widgets/custom_radio_field.dart';
 import 'package:salesforce_app/modules/home/controllers/visit_controller.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -34,6 +36,7 @@ class VisitTab extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,6 +47,7 @@ class VisitTab extends StatelessWidget {
                             color: Colors.white,
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
+                            height: 1.2,
                           ),
                         ),
                         SizedBox(height: 4.h),
@@ -51,13 +55,13 @@ class VisitTab extends StatelessWidget {
                           todayDate,
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.8),
-                            fontSize: 14.sp,
+                            fontSize: 13.sp,
                           ),
                         ),
                       ],
                     ),
                     Container(
-                      padding: EdgeInsets.all(12.w),
+                      padding: EdgeInsets.all(8.w),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.15),
                         shape: BoxShape.circle,
@@ -65,14 +69,18 @@ class VisitTab extends StatelessWidget {
                       child: Icon(
                         Icons.shopping_cart_outlined,
                         color: Colors.white,
-                        size: 24.sp,
+                        size: 20.sp,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20.h),
-                Divider(color: Colors.white.withOpacity(0.2), thickness: 1),
-                SizedBox(height: 16.h),
+                SizedBox(height: 12.h),
+                Divider(
+                  color: Colors.white.withOpacity(0.2),
+                  thickness: 1,
+                  height: 1,
+                ),
+                SizedBox(height: 12.h),
 
                 // Waktu Datang & Pulang
                 IntrinsicHeight(
@@ -82,7 +90,7 @@ class VisitTab extends StatelessWidget {
 
                       // Divider Tengah
                       Container(
-                        height: 30.h,
+                        height: 24.h,
                         width: 1,
                         color: Colors.white.withOpacity(0.2),
                         margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -96,7 +104,8 @@ class VisitTab extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 28.h),
+          SizedBox(height: 24.h),
+
           const SectionTitle(
             title: "Titik Lokasi",
             subtitle: "Pastikan sesuai lokasi toko saat ini",
@@ -106,8 +115,8 @@ class VisitTab extends StatelessWidget {
             height: 200.h,
             width: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.r),
-              border: Border.all(color: Colors.grey[200]!),
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              border: Border.all(color: noFocused),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.05),
@@ -117,7 +126,7 @@ class VisitTab extends StatelessWidget {
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20.r),
+              borderRadius: BorderRadius.circular(AppRadius.lg),
               child: Obx(() {
                 if (controller.isLoadingMap.value) {
                   return Container(
@@ -163,7 +172,8 @@ class VisitTab extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 28.h),
+          SizedBox(height: 24.h),
+
           const SectionTitle(
             title: "Data Outlet",
             subtitle: "Pilih toko tujuan kunjungan",
@@ -177,15 +187,18 @@ class VisitTab extends StatelessWidget {
             icon: Icons.store_mall_directory,
           ),
           SizedBox(height: 16.h),
-          CustomDropdown(
-            label: "Jenis Outlet",
-            hint: "Pilih Jenis",
-            items: controller.outletTypeList,
-            selectedValue: controller.selectedOutletType,
-            onChanged: (val) => controller.selectedOutletType.value = val,
-            icon: Icons.category,
+          Obx(
+            () => CustomRadioField(
+              label: "Jenis Outlet",
+              items: controller.outletTypeList,
+              selectedValue: controller.selectedOutletType.value,
+              onChanged: (val) {
+                controller.selectedOutletType.value = val;
+              },
+            ),
           ),
-          SizedBox(height: 40.h),
+
+          SizedBox(height: 32.h),
 
           SizedBox(
             width: double.infinity,
@@ -207,17 +220,7 @@ class VisitTab extends StatelessWidget {
               }
               return ElevatedButton.icon(
                 onPressed: isDisabled ? null : controller.handleButtonAction,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: buttonColor,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: Colors.grey[200],
-                  disabledForegroundColor: Colors.grey[500],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  elevation: isDisabled ? 0 : 4,
-                  shadowColor: buttonColor.withOpacity(0.4),
-                ),
+                style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
                 icon: Icon(btnIcon),
                 label: Text(
                   buttonText,
@@ -229,7 +232,7 @@ class VisitTab extends StatelessWidget {
               );
             }),
           ),
-          SizedBox(height: 120.h),
+          SizedBox(height: 100.h),
         ],
       ),
     );
@@ -246,16 +249,18 @@ class VisitTab extends StatelessWidget {
             style: TextStyle(
               color: Colors.white.withOpacity(0.8),
               fontSize: 10.sp,
+              height: 1.0,
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 2.h),
           Obx(
             () => Text(
               value.value,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 12.sp,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.bold,
+                height: 1.2,
               ),
             ),
           ),

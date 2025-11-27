@@ -26,8 +26,9 @@ class AppTheme {
         foregroundColor: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.full),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
+        minimumSize: Size(0, 50.h),
         elevation: 0.0,
         shadowColor: Colors.transparent,
       ),
@@ -46,23 +47,23 @@ class AppTheme {
       filled: true,
       fillColor: Colors.white,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(50.r),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         borderSide: BorderSide(color: noFocused, width: 1.0.w),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(50.r),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         borderSide: BorderSide(color: noFocused, width: 1.0.w),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(50.r),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         borderSide: BorderSide(color: primaryColor, width: 1.0.w),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(50.r),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         borderSide: BorderSide(color: Colors.red, width: 1.0.w),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(50.r),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         borderSide: BorderSide(color: Colors.red, width: 1.0.w),
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),

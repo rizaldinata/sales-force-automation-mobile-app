@@ -60,7 +60,9 @@ class _CustomInfoDialogState extends State<CustomInfoDialog>
     final IconData icon = isSuccess ? Icons.check_circle : Icons.error_outline;
 
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+      ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
       child: Container(
@@ -68,7 +70,7 @@ class _CustomInfoDialogState extends State<CustomInfoDialog>
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -134,7 +136,7 @@ class _CustomInfoDialogState extends State<CustomInfoDialog>
                 style: ElevatedButton.styleFrom(
                   backgroundColor: mainColor,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.full),
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),
                   padding: EdgeInsets.zero,
                   elevation: 0.0,

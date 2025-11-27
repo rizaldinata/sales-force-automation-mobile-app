@@ -13,7 +13,7 @@ class VisitController extends GetxController {
     "Sumber Rejeki",
     "Outlet Merdeka",
   ];
-  final outletTypeList = ["General Trade (GT)", "Modern Trade (MT)", "Pareto"];
+  final outletTypeList = ["Online", "Offline"];
   var selectedOutlet = Rxn<String>();
   var selectedOutletType = Rxn<String>();
   var waktuDatang = "Belum".obs;
