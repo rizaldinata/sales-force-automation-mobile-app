@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -131,30 +133,34 @@ class OutletFilterSheet extends GetView<OutletController> {
         onTap: () => controller.filterDateMode.value = value,
         behavior: HitTestBehavior.opaque,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOut,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.fastOutSlowIn,
+          alignment: Alignment.center,
           padding: EdgeInsets.symmetric(vertical: 10.h),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.white : Colors.transparent,
+            color: isSelected ? Colors.white : Colors.white.withOpacity(0.0),
+
             borderRadius: BorderRadius.circular(AppRadius.lg - 4),
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ]
-                : [],
+            boxShadow: [
+              BoxShadow(
+                color: isSelected
+                    ? Colors.black.withOpacity(0.08)
+                    : Colors.black.withOpacity(0.0),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
+          child: AnimatedDefaultTextStyle(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.fastOutSlowIn,
             style: TextStyle(
               fontSize: 13.sp,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w600,
               color: isSelected ? primaryColor : Colors.grey[500],
             ),
+            child: Text(label, textAlign: TextAlign.center),
           ),
         ),
       ),
@@ -247,7 +253,7 @@ class OutletFilterSheet extends GetView<OutletController> {
                 ),
               ),
             ),
-            Icon(Icons.calendar_today, size: 16.sp, color: Colors.grey[400]),
+            Icon(Icons.calendar_month, size: 18.sp, color: primaryColor),
           ],
         ),
       ),
