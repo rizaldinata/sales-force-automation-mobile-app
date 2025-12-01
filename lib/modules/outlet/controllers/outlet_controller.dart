@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salesforce_app/app/data/models/outlet_model.dart';
+import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/app/ui/widgets/month_picker_dialog.dart';
 import 'package:salesforce_app/modules/outlet/views/widgets/outlet_filter_sheet.dart';
 
@@ -77,16 +78,54 @@ class OutletController extends GetxController {
   }
 
   Future<void> pickDate(BuildContext context, {required bool isStart}) async {
-    final picked = await showDatePicker(
+    DateTime initial = DateTime.now();
+    if (isStart && startDate.value != null) {
+      initial = startDate.value!;
+    } else if (!isStart && endDate.value != null) {
+      initial = endDate.value!;
+    }
+
+    final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: initial,
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: primaryColor,
+              onPrimary: Colors.white,
+              onSurface: Colors.black87,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: primaryColor),
+            ),
+            dialogTheme: DialogThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
+
     if (picked != null) {
       if (isStart) {
         startDate.value = picked;
+        if (endDate.value != null && startDate.value!.isAfter(endDate.value!)) {
+          endDate.value = null;
+        }
       } else {
+        if (startDate.value != null && picked.isBefore(startDate.value!)) {
+          Get.snackbar(
+            "Peringatan",
+            "Tanggal sampai tidak boleh kurang dari tanggal mulai",
+          );
+          return;
+        }
         endDate.value = picked;
       }
     }
