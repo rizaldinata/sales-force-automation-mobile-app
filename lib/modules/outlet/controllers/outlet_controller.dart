@@ -22,8 +22,11 @@ class OutletController extends GetxController {
   final int _limit = 10;
   var isLoadingMore = false.obs;
   var hasMore = true.obs;
+  var isFiltering = false.obs;
 
-  final List<OutletModel> _allOutletsSource = [];
+  final List<OutletModel> _allMasterData = [];
+
+  final List<OutletModel> _filteredData = [];
 
   final displayedOutlets = <OutletModel>[].obs;
 
@@ -31,15 +34,25 @@ class OutletController extends GetxController {
   void onInit() {
     super.onInit();
     _generateDummyData();
-    _loadInitialData();
+    _applyFiltersAndSearch();
 
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
-              scrollController.position.maxScrollExtent &&
+              scrollController.position.maxScrollExtent - 200 &&
           !isLoadingMore.value &&
           hasMore.value) {
         loadMoreOutlets();
       }
+    });
+
+    debounce(
+      RxString(''),
+      (_) => _applyFiltersAndSearch(),
+      time: const Duration(milliseconds: 500),
+    );
+    searchC.addListener(() {
+      if (searchC.text != '') _applyFiltersAndSearch();
+      if (searchC.text.isEmpty) _applyFiltersAndSearch();
     });
   }
 
@@ -53,19 +66,24 @@ class OutletController extends GetxController {
   void openFilter() {
     Get.bottomSheet(
       const OutletFilterSheet(),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
     );
   }
 
   void applyFilter() {
     Get.back();
+    _applyFiltersAndSearch();
+
     Get.snackbar(
       "Filter Diterapkan",
-      "Mode: ${filterDateMode.value}, Status: ${selectedStatus.value}",
+      "Ditemukan ${_filteredData.length} outlet",
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.black87,
+      colorText: Colors.white,
+      margin: const EdgeInsets.all(16),
+      borderRadius: 12,
+      duration: const Duration(seconds: 2),
     );
   }
 
@@ -75,6 +93,20 @@ class OutletController extends GetxController {
     startDate.value = null;
     endDate.value = null;
     selectedStatus.value = "Semua";
+
+    Get.rawSnackbar(
+      message: "Filter direset ke default",
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  Future<void> pickMonth() async {
+    final DateTime? picked = await Get.dialog(
+      MonthPickerDialog(initialDate: selectedMonth.value),
+    );
+    if (picked != null) {
+      selectedMonth.value = picked;
+    }
   }
 
   Future<void> pickDate(BuildContext context, {required bool isStart}) async {
@@ -131,33 +163,126 @@ class OutletController extends GetxController {
     }
   }
 
-  Future<void> pickMonth() async {
-    final DateTime? picked = await Get.dialog(
-      MonthPickerDialog(initialDate: selectedMonth.value),
+  void addDummyOutlet() {
+    final newOutlet = OutletModel(
+      id: "NEW-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}",
+      name: "Outlet Baru ${_allMasterData.length + 1}",
+      type: "Offline",
+      address: "Jl. Baru Ditambah No. 1",
+      isVerified: false,
+      createdAt: DateTime.now(),
     );
 
-    if (picked != null) {
-      selectedMonth.value = picked;
-    }
+    _allMasterData.insert(0, newOutlet);
+    _applyFiltersAndSearch();
+    Get.snackbar("Berhasil", "Outlet baru berhasil ditambahkan");
   }
 
   void _generateDummyData() {
-    for (int i = 1; i <= 45; i++) {
-      _allOutletsSource.add(
+    final now = DateTime.now();
+    for (int i = 1; i <= 1000; i++) {
+      final randomDays = (i * 123) % 60;
+      _allMasterData.add(
         OutletModel(
           id: "OUT-${i.toString().padLeft(3, '0')}",
           name: "Outlet Sejahtera #$i",
           type: i % 2 == 0 ? "Online" : "Offline",
           address: "Jl. Raya Dummy No. $i, Kota Simulasi",
           isVerified: i % 3 == 0,
+          createdAt: now.subtract(Duration(days: randomDays)),
         ),
       );
     }
   }
 
-  void _loadInitialData() {
-    displayedOutlets.assignAll(_allOutletsSource.take(_limit));
-    if (_allOutletsSource.length <= _limit) {
+  void _applyFiltersAndSearch() {
+    isFiltering.value = true;
+    hasMore.value = true;
+
+    // Reset data hasil filter
+    _filteredData.clear();
+    List<OutletModel> temp = List.from(_allMasterData);
+
+    // Filter search text
+    if (searchC.text.isNotEmpty) {
+      final keyword = searchC.text.toLowerCase();
+      temp = temp
+          .where(
+            (outlet) =>
+                outlet.name.toLowerCase().contains(keyword) ||
+                outlet.id.toLowerCase().contains(keyword),
+          )
+          .toList();
+    }
+
+    // Filter status
+    if (selectedStatus.value != "Semua") {
+      bool isVerif = selectedStatus.value == "Terverifikasi";
+      temp = temp.where((outlet) => outlet.isVerified == isVerif).toList();
+    }
+
+    // Filter tanggal
+    if (filterDateMode.value == 'period') {
+      temp = temp
+          .where(
+            (outlet) =>
+                outlet.createdAt.month == selectedMonth.value.month &&
+                outlet.createdAt.year == selectedMonth.value.year,
+          )
+          .toList();
+    } else if (filterDateMode.value == 'range' &&
+        startDate.value != null &&
+        endDate.value != null) {
+      final start = DateTime(
+        startDate.value!.year,
+        startDate.value!.month,
+        startDate.value!.day,
+      );
+      final end = DateTime(
+        endDate.value!.year,
+        endDate.value!.month,
+        endDate.value!.day,
+        23,
+        59,
+        59,
+      );
+
+      temp = temp
+          .where(
+            (outlet) =>
+                outlet.createdAt.isAfter(
+                  start.subtract(const Duration(seconds: 1)),
+                ) &&
+                outlet.createdAt.isBefore(end.add(const Duration(seconds: 1))),
+          )
+          .toList();
+    }
+
+    _filteredData.assignAll(temp);
+
+    displayedOutlets.clear();
+    _loadNextPage();
+
+    isFiltering.value = false;
+  }
+
+  void _loadNextPage() {
+    int currentCount = displayedOutlets.length;
+    int remaining = _filteredData.length - currentCount;
+
+    if (remaining <= 0) {
+      hasMore.value = false;
+      return;
+    }
+
+    int takeCount = remaining < _limit ? remaining : _limit;
+    List<OutletModel> nextData = _filteredData
+        .getRange(currentCount, currentCount + takeCount)
+        .toList();
+
+    displayedOutlets.addAll(nextData);
+
+    if (displayedOutlets.length >= _filteredData.length) {
       hasMore.value = false;
     }
   }
@@ -166,25 +291,8 @@ class OutletController extends GetxController {
     if (isLoadingMore.value || !hasMore.value) return;
 
     isLoadingMore.value = true;
-
-    await Future.delayed(const Duration(milliseconds: 1500));
-
-    int currentCount = displayedOutlets.length;
-    List<OutletModel> nextData = _allOutletsSource
-        .skip(currentCount)
-        .take(_limit)
-        .toList();
-
-    if (nextData.isNotEmpty) {
-      displayedOutlets.addAll(nextData);
-    } else {
-      hasMore.value = false;
-    }
-
-    if (displayedOutlets.length >= _allOutletsSource.length) {
-      hasMore.value = false;
-    }
-
+    await Future.delayed(const Duration(milliseconds: 1000));
+    _loadNextPage();
     isLoadingMore.value = false;
   }
 }

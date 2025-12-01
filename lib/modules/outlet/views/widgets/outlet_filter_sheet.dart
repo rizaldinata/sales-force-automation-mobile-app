@@ -16,6 +16,10 @@ class OutletFilterSheet extends GetView<OutletController> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 24.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -42,16 +46,18 @@ class OutletFilterSheet extends GetView<OutletController> {
               ),
               TextButton(
                 onPressed: controller.resetFilter,
-                child: Text(
-                  "Reset",
-                  style: TextStyle(fontSize: 14.sp, color: Colors.red),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.red,
+                  textStyle: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
+                child: const Text("Reset"),
               ),
             ],
           ),
-          Divider(thickness: 1, color: Colors.grey[200]),
-
-          SizedBox(height: 16.h),
+          Divider(thickness: 1, color: Colors.grey[200], height: 24.h),
 
           Obx(
             () => CustomRadioField(
@@ -103,10 +109,8 @@ class OutletFilterSheet extends GetView<OutletController> {
 
           Obx(() {
             if (controller.filterDateMode.value == 'period') {
-              // MODE PERIODE
               return _buildPeriodPicker(context);
             } else {
-              // MODE RANGE
               return _buildRangePicker(context);
             }
           }),
@@ -117,9 +121,28 @@ class OutletFilterSheet extends GetView<OutletController> {
             height: 50.h,
             child: ElevatedButton(
               onPressed: controller.applyFilter,
-              style: ElevatedButton.styleFrom(),
-              child: const Text("Terapkan Filter"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    AppRadius.lg,
+                  ), // Radius 16
+                ),
+              ),
+              child: Text(
+                "Terapkan Filter",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
+              ),
             ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).padding.bottom > 0 ? 10.h : 0,
           ),
         ],
       ),
@@ -139,7 +162,6 @@ class OutletFilterSheet extends GetView<OutletController> {
           padding: EdgeInsets.symmetric(vertical: 10.h),
           decoration: BoxDecoration(
             color: isSelected ? Colors.white : Colors.white.withOpacity(0.0),
-
             borderRadius: BorderRadius.circular(AppRadius.lg - 4),
             boxShadow: [
               BoxShadow(
@@ -191,7 +213,7 @@ class OutletFilterSheet extends GetView<OutletController> {
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
               ),
             ),
-            const Icon(Icons.calendar_month, color: primaryColor),
+            Icon(Icons.calendar_month, color: primaryColor, size: 20.sp),
           ],
         ),
       ),
@@ -209,9 +231,7 @@ class OutletFilterSheet extends GetView<OutletController> {
             onTap: () => controller.pickDate(context, isStart: true),
           ),
         ),
-
         SizedBox(width: 12.w),
-
         Expanded(
           child: _dateInputBox(
             context,
