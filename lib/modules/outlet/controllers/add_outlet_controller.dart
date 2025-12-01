@@ -69,16 +69,18 @@ class AddOutletController extends GetxController {
     "Institusi - Ponpes",
     "Institusi - Party",
     "Institusi - Koperasi",
+    "Modern Market",
+    "Semi Modern Market",
     "Supermarket",
     "Minimarket",
     "Reseller",
     "Kemitraan",
   ];
 
-  // Tradisional, Ponpes, Koperasi
+  // Tradisional, Ponpes, Koperasi, Modern Market
   final distributionTypeList = ["Agen", "Grosir", "Grosir + Retail", "Retail"];
 
-  // Tradisional, B2G, Ponpes, Party, Koperasi
+  // Tradisional, B2G, Ponpes, Party, Koperasi, Modern Market
   final categoryList = [
     "A - Top",
     "B - Middle Up",
