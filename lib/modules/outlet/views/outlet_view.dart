@@ -123,7 +123,7 @@ class OutletView extends GetView<OutletController> {
 
                 return ListView.builder(
                   controller: controller.scrollController,
-                  padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 80.h),
+                  padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 80.h),
                   itemCount:
                       controller.displayedOutlets.length +
                       (controller.hasMore.value ? 1 : 0),

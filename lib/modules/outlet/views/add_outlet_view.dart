@@ -29,6 +29,8 @@ class AddOutletView extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
@@ -42,15 +44,12 @@ class AddOutletView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Header Stepper (Putih)
           _buildStepperHeader(controller),
-
-          // Content Form
           Expanded(
             child: Obx(() {
               return SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 100.h),
-                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
+                physics: const ClampingScrollPhysics(),
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 20.w,
@@ -58,9 +57,7 @@ class AddOutletView extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(
-                      AppRadius.xl,
-                    ), // Radius 24
+                    borderRadius: BorderRadius.circular(AppRadius.xl),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.03),
