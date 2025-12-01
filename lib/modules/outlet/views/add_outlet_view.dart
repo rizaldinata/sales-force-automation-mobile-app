@@ -191,7 +191,7 @@ class AddOutletView extends StatelessWidget {
           _sectionDivider("Jenis dan Tipe Outlet"),
 
           CustomDropdown(
-            label: "Jenis & Tipe Outlet",
+            label: "Jenis",
             hint: "Pilih Jenis",
             items: controller.typeList,
             selectedValue: controller.typeC,
@@ -414,6 +414,14 @@ class AddOutletView extends StatelessWidget {
             controller: controller.ktpC,
             hintText: "16 Digit NIK",
             keyboardType: TextInputType.number,
+          ),
+          SizedBox(height: 16.h),
+
+          _inputLabel("Telepon Hp"),
+          PrimaryTextFormField(
+            controller: controller.telephoneC,
+            hintText: "08xxxxxxxx",
+            keyboardType: TextInputType.phone,
           ),
           SizedBox(height: 16.h),
 

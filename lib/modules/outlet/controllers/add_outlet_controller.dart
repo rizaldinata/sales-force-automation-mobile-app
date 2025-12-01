@@ -34,7 +34,7 @@ class AddOutletController extends GetxController {
   final ownerPhoneC = TextEditingController(); // HP Pemilik
 
   final ktpC = TextEditingController(); // KTP
-  final landlineC = TextEditingController(); // Telp Rumah/Kantor
+  final telephoneC = TextEditingController(); // Telp Rumah/Kantor
   final npwpC = TextEditingController(); // NPWP
   final plafonC = TextEditingController(); // Plafon Kredit
 
@@ -172,7 +172,7 @@ class AddOutletController extends GetxController {
     ownerC.dispose();
     ownerPhoneC.dispose();
     ktpC.dispose();
-    landlineC.dispose();
+    telephoneC.dispose();
     npwpC.dispose();
     plafonC.dispose();
     areaC.dispose();
