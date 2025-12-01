@@ -18,7 +18,6 @@ class OutletFilterSheet extends GetView<OutletController> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // 1. HEADER (Garis Handle & Judul)
           Center(
             child: Container(
               width: 40.w,
@@ -29,7 +28,9 @@ class OutletFilterSheet extends GetView<OutletController> {
               ),
             ),
           ),
+
           SizedBox(height: 16.h),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -47,6 +48,7 @@ class OutletFilterSheet extends GetView<OutletController> {
             ],
           ),
           Divider(thickness: 1, color: Colors.grey[200]),
+
           SizedBox(height: 16.h),
 
           Obx(
@@ -60,7 +62,6 @@ class OutletFilterSheet extends GetView<OutletController> {
 
           SizedBox(height: 24.h),
 
-          // 3. FILTER TANGGAL (Pilih Mode)
           Text(
             "Waktu Kunjungan",
             style: TextStyle(
@@ -69,9 +70,9 @@ class OutletFilterSheet extends GetView<OutletController> {
               color: Colors.grey[700],
             ),
           ),
+
           SizedBox(height: 12.h),
 
-          // Tab Switcher Buatan Sendiri (Agar sesuai desain 16px)
           Obx(
             () => Container(
               padding: EdgeInsets.all(4.w),
@@ -98,7 +99,6 @@ class OutletFilterSheet extends GetView<OutletController> {
 
           SizedBox(height: 16.h),
 
-          // 4. KONTEN FILTER TANGGAL (Berubah sesuai mode)
           Obx(() {
             if (controller.filterDateMode.value == 'period') {
               // MODE PERIODE
@@ -111,14 +111,11 @@ class OutletFilterSheet extends GetView<OutletController> {
 
           SizedBox(height: 32.h),
 
-          // 5. TOMBOL TERAPKAN
           SizedBox(
             height: 50.h,
             child: ElevatedButton(
               onPressed: controller.applyFilter,
-              style: ElevatedButton.styleFrom(
-                // Shape otomatis 16.r dari AppTheme
-              ),
+              style: ElevatedButton.styleFrom(),
               child: const Text("Terapkan Filter"),
             ),
           ),
@@ -127,26 +124,19 @@ class OutletFilterSheet extends GetView<OutletController> {
     );
   }
 
-  // --- HELPER WIDGETS ---
-
   Widget _buildTabItem(String label, String value, String groupValue) {
     bool isSelected = value == groupValue;
     return Expanded(
-      // PERBAIKAN: Ganti InkWell dengan GestureDetector
-      // Ini menghilangkan efek "tertekan/ripple" yang mengganggu
       child: GestureDetector(
         onTap: () => controller.filterDateMode.value = value,
-        // behavior: HitTestBehavior.opaque penting agar area kosong tetap bisa diklik
         behavior: HitTestBehavior.opaque,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOut, // Tambah curve agar lebih smooth
+          curve: Curves.easeInOut,
           padding: EdgeInsets.symmetric(vertical: 10.h),
           decoration: BoxDecoration(
             color: isSelected ? Colors.white : Colors.transparent,
-            borderRadius: BorderRadius.circular(
-              AppRadius.lg - 4,
-            ), // Radius dalam sedikit lebih kecil
+            borderRadius: BorderRadius.circular(AppRadius.lg - 4),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
@@ -172,12 +162,8 @@ class OutletFilterSheet extends GetView<OutletController> {
   }
 
   Widget _buildPeriodPicker(BuildContext context) {
-    // Tampilan sederhana memilih Bulan (Bisa dikembangkan jadi MonthPicker canggih)
-    // Disini kita pakai Input Box readonly yang memunculkan DatePicker
     return InkWell(
       onTap: () async {
-        // Logika simple: buka date picker, ambil bulan & tahunnya
-        // Untuk production bisa pakai package 'month_picker_dialog'
         final picked = await showDatePicker(
           context: context,
           initialDate: controller.selectedMonth.value,
@@ -215,7 +201,6 @@ class OutletFilterSheet extends GetView<OutletController> {
   Widget _buildRangePicker(BuildContext context) {
     return Row(
       children: [
-        // DARI TANGGAL
         Expanded(
           child: _dateInputBox(
             context,
@@ -224,8 +209,9 @@ class OutletFilterSheet extends GetView<OutletController> {
             onTap: () => controller.pickDate(context, isStart: true),
           ),
         ),
+
         SizedBox(width: 12.w),
-        // SAMPAI TANGGAL
+
         Expanded(
           child: _dateInputBox(
             context,

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,19 +16,16 @@ class OutletView extends GetView<OutletController> {
     return Scaffold(
       backgroundColor: backgroundColor,
       floatingActionButton: SizedBox(
-        height: 50.h, // Tinggi konsisten 50px
+        height: 50.h,
         child: FloatingActionButton.extended(
           onPressed: () {
-            // Nanti ke halaman Create Outlet
             Get.snackbar("Info", "Fitur Tambah Outlet akan segera hadir");
           },
           backgroundColor: primaryColor,
           elevation: 4,
-          // STYLE KONSISTEN: Radius 16px (AppRadius.lg)
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.lg),
           ),
-          // ICON + LABEL
           icon: Icon(Icons.add, color: Colors.white, size: 20.sp),
           label: Text(
             "Tambah Outlet",
@@ -57,9 +56,9 @@ class OutletView extends GetView<OutletController> {
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                   ),
+
                   SizedBox(width: 16.w),
 
-                  // Search Bar
                   Expanded(
                     child: TextField(
                       controller: controller.searchC,
@@ -94,7 +93,6 @@ class OutletView extends GetView<OutletController> {
 
                   SizedBox(width: 12.w),
 
-                  // Tombol Filter
                   InkWell(
                     onTap: controller.openFilter,
                     borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -115,7 +113,6 @@ class OutletView extends GetView<OutletController> {
               ),
             ),
 
-            // LIST DATA
             Expanded(
               child: Obx(() {
                 if (controller.displayedOutlets.isEmpty &&
@@ -125,13 +122,10 @@ class OutletView extends GetView<OutletController> {
 
                 return ListView.builder(
                   controller: controller.scrollController,
-
                   padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 80.h),
-
                   itemCount:
                       controller.displayedOutlets.length +
                       (controller.hasMore.value ? 1 : 0),
-
                   itemBuilder: (context, index) {
                     if (index == controller.displayedOutlets.length) {
                       return Padding(
