@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/app/ui/theme/app_constants.dart';
-import 'package:salesforce_app/app/ui/widgets/custom_radio_field.dart'; // Kita pakai ulang widget ini!
+import 'package:salesforce_app/app/ui/widgets/custom_radio_field.dart';
 import 'package:salesforce_app/modules/outlet/controllers/outlet_controller.dart';
 
 class OutletFilterSheet extends GetView<OutletController> {
@@ -49,7 +49,6 @@ class OutletFilterSheet extends GetView<OutletController> {
           Divider(thickness: 1, color: Colors.grey[200]),
           SizedBox(height: 16.h),
 
-          // 2. FILTER STATUS (Pakai CustomRadioField Boxed yg sudah kita buat)
           Obx(
             () => CustomRadioField(
               label: "Status Outlet",
@@ -133,22 +132,27 @@ class OutletFilterSheet extends GetView<OutletController> {
   Widget _buildTabItem(String label, String value, String groupValue) {
     bool isSelected = value == groupValue;
     return Expanded(
-      child: InkWell(
+      // PERBAIKAN: Ganti InkWell dengan GestureDetector
+      // Ini menghilangkan efek "tertekan/ripple" yang mengganggu
+      child: GestureDetector(
         onTap: () => controller.filterDateMode.value = value,
-        borderRadius: BorderRadius.circular(12.r),
+        // behavior: HitTestBehavior.opaque penting agar area kosong tetap bisa diklik
+        behavior: HitTestBehavior.opaque,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut, // Tambah curve agar lebih smooth
           padding: EdgeInsets.symmetric(vertical: 10.h),
           decoration: BoxDecoration(
             color: isSelected ? Colors.white : Colors.transparent,
             borderRadius: BorderRadius.circular(
-              12.r,
-            ), // Sedikit lebih kecil dari container luar
+              AppRadius.lg - 4,
+            ), // Radius dalam sedikit lebih kecil
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withOpacity(0.08),
                       blurRadius: 4,
+                      offset: const Offset(0, 2),
                     ),
                   ]
                 : [],

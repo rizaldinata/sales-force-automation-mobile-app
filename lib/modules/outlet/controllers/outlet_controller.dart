@@ -5,6 +5,7 @@ import 'package:salesforce_app/modules/outlet/views/widgets/outlet_filter_sheet.
 
 class OutletController extends GetxController {
   final searchC = TextEditingController();
+  final scrollController = ScrollController();
 
   var filterDateMode = 'period'.obs;
 
@@ -16,327 +17,34 @@ class OutletController extends GetxController {
   final statusList = ["Semua", "Terverifikasi", "Belum Verif"];
   var selectedStatus = "Semua".obs;
 
-  final outlets = <OutletModel>[
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-    OutletModel(
-      id: "OUT-001",
-      name: "Toko Makmur Jaya",
-      type: "Offline",
-      address: "Jl. Ahmad Yani No. 45, Surabaya",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-002",
-      name: "Berkah Abadi Store",
-      type: "Online",
-      address: "Ruko Grand City Blok B-12",
-      isVerified: true,
-    ),
-    OutletModel(
-      id: "OUT-003",
-      name: "Warung Bu Siti",
-      type: "Offline",
-      address: "Jl. Kebon Jeruk Gg. 2, Jakarta Barat",
-      isVerified: false,
-    ),
-  ].obs;
+  final int _limit = 10;
+  var isLoadingMore = false.obs;
+  var hasMore = true.obs;
+
+  final List<OutletModel> _allOutletsSource = [];
+
+  final displayedOutlets = <OutletModel>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _generateDummyData();
+    _loadInitialData();
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+              scrollController.position.maxScrollExtent &&
+          !isLoadingMore.value &&
+          hasMore.value) {
+        loadMoreOutlets();
+      }
+    });
+  }
 
   @override
   void onClose() {
     searchC.dispose();
+    scrollController.dispose();
     super.onClose();
   }
 
@@ -381,5 +89,52 @@ class OutletController extends GetxController {
         endDate.value = picked;
       }
     }
+  }
+
+  void _generateDummyData() {
+    for (int i = 1; i <= 45; i++) {
+      _allOutletsSource.add(
+        OutletModel(
+          id: "OUT-${i.toString().padLeft(3, '0')}",
+          name: "Outlet Sejahtera #$i",
+          type: i % 2 == 0 ? "Online" : "Offline",
+          address: "Jl. Raya Dummy No. $i, Kota Simulasi",
+          isVerified: i % 3 == 0,
+        ),
+      );
+    }
+  }
+
+  void _loadInitialData() {
+    displayedOutlets.assignAll(_allOutletsSource.take(_limit));
+    if (_allOutletsSource.length <= _limit) {
+      hasMore.value = false;
+    }
+  }
+
+  Future<void> loadMoreOutlets() async {
+    if (isLoadingMore.value || !hasMore.value) return;
+
+    isLoadingMore.value = true;
+
+    await Future.delayed(const Duration(milliseconds: 1500));
+
+    int currentCount = displayedOutlets.length;
+    List<OutletModel> nextData = _allOutletsSource
+        .skip(currentCount)
+        .take(_limit)
+        .toList();
+
+    if (nextData.isNotEmpty) {
+      displayedOutlets.addAll(nextData);
+    } else {
+      hasMore.value = false;
+    }
+
+    if (displayedOutlets.length >= _allOutletsSource.length) {
+      hasMore.value = false;
+    }
+
+    isLoadingMore.value = false;
   }
 }

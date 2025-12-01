@@ -117,24 +117,39 @@ class OutletView extends GetView<OutletController> {
 
             // LIST DATA
             Expanded(
-              child: Obx(
-                () => ListView.builder(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 24.w,
-                    vertical: 16.h,
-                  ),
-                  itemCount: controller.outlets.length,
+              child: Obx(() {
+                if (controller.displayedOutlets.isEmpty &&
+                    controller.isLoadingMore.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return ListView.builder(
+                  controller: controller.scrollController,
+
+                  padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 80.h),
+
+                  itemCount:
+                      controller.displayedOutlets.length +
+                      (controller.hasMore.value ? 1 : 0),
+
                   itemBuilder: (context, index) {
-                    final outlet = controller.outlets[index];
-                    return OutletCard(
-                      outlet: outlet,
-                      onTap: () {
-                        // Aksi saat card diklik
-                      },
-                    );
+                    if (index == controller.displayedOutlets.length) {
+                      return Padding(
+                        padding: EdgeInsets.all(16.h),
+                        child: const Center(
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(strokeWidth: 2.5),
+                          ),
+                        ),
+                      );
+                    }
+                    final outlet = controller.displayedOutlets[index];
+                    return OutletCard(outlet: outlet, onTap: () {});
                   },
-                ),
-              ),
+                );
+              }),
             ),
           ],
         ),
