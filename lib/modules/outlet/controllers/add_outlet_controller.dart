@@ -21,9 +21,10 @@ class AddOutletController extends GetxController {
 
   final distributionTypeC = Rxn<String>();
   final categoryC = Rxn<String>();
-
   final purchaseTypeC = Rxn<String>();
   final employeeCountC = Rxn<String>();
+  final studentCountC = Rxn<String>();
+  final coopMemberCountC = Rxn<String>();
 
   final nameC = TextEditingController(); // Nama Outlet
   final managerC = TextEditingController(); // Pengelola
@@ -74,10 +75,10 @@ class AddOutletController extends GetxController {
     "Kemitraan",
   ];
 
-  // Tradisional
+  // Tradisional, Ponpes, Koperasi
   final distributionTypeList = ["Agen", "Grosir", "Grosir + Retail", "Retail"];
 
-  // Tradisional & B2G
+  // Tradisional, B2G, Ponpes, Party, Koperasi
   final categoryList = [
     "A - Top",
     "B - Middle Up",
@@ -87,7 +88,7 @@ class AddOutletController extends GetxController {
     "R - Reseller",
   ];
 
-  // B2B & B2G
+  // B2B, B2G, Ponpes, Party, Koperasi
   final purchaseTypeList = ["CSR", "Gift", "Komunitas", "Promosi", "Seragam"];
 
   // B2B
@@ -96,6 +97,16 @@ class AddOutletController extends GetxController {
     "< 1000 Orang",
     "> 5000 Orang",
   ];
+
+  // Ponpes
+  final studentCountList = [
+    "1000 - 5000 Santri",
+    "< 1000 Santri",
+    "> 5000 Santri",
+  ];
+
+  // Koperasi
+  final coopMemberCountList = ["1000 - 5000 Orang", "< 1000 Orang"];
 
   final locationTypeList = [
     "Pinggir Jalan",

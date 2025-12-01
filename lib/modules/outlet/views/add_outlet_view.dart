@@ -196,14 +196,18 @@ class AddOutletView extends StatelessWidget {
             selectedValue: controller.typeC,
             onChanged: (val) {
               controller.typeC.value = val;
+              // Reset Logic (Bersihkan field saat ganti tipe)
               controller.distributionTypeC.value = null;
               controller.categoryC.value = null;
               controller.purchaseTypeC.value = null;
               controller.employeeCountC.value = null;
+              controller.studentCountC.value = null;
+              controller.coopMemberCountC.value = null; // Reset Koperasi
             },
             icon: Icons.store_mall_directory,
           ),
 
+          // --- CASE 1: TRADISIONAL ---
           if (controller.typeC.value == "Tradisional") ...[
             SizedBox(height: 16.h),
             CustomDropdown(
@@ -223,7 +227,9 @@ class AddOutletView extends StatelessWidget {
               hint: "Pilih Kategori",
               icon: Icons.category_outlined,
             ),
-          ] else if (controller.typeC.value == "Institusi - B2B") ...[
+          ]
+          // --- CASE 2: INSTITUSI - B2B ---
+          else if (controller.typeC.value == "Institusi - B2B") ...[
             SizedBox(height: 16.h),
             CustomDropdown(
               label: "Tipe Pembelian",
@@ -242,7 +248,9 @@ class AddOutletView extends StatelessWidget {
               hint: "Pilih Range",
               icon: Icons.people_outline,
             ),
-          ] else if (controller.typeC.value == "Institusi - B2G") ...[
+          ]
+          // --- CASE 3: INSTITUSI - B2G ---
+          else if (controller.typeC.value == "Institusi - B2G") ...[
             SizedBox(height: 16.h),
             CustomDropdown(
               label: "Kategori",
@@ -261,11 +269,119 @@ class AddOutletView extends StatelessWidget {
               hint: "Pilih Tipe",
               icon: Icons.shopping_cart_checkout,
             ),
+          ]
+          // --- CASE 4: INSTITUSI - PONPES ---
+          else if (controller.typeC.value == "Institusi - Ponpes") ...[
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Tipe Distribusi",
+              items: controller.distributionTypeList,
+              selectedValue: controller.distributionTypeC,
+              onChanged: (v) => controller.distributionTypeC.value = v,
+              hint: "Pilih Tipe",
+              icon: Icons.local_shipping_outlined,
+            ),
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Kategori",
+              items: controller.categoryList,
+              selectedValue: controller.categoryC,
+              onChanged: (v) => controller.categoryC.value = v,
+              hint: "Pilih Kategori",
+              icon: Icons.category_outlined,
+            ),
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Tipe Pembelian",
+              items: controller.purchaseTypeList,
+              selectedValue: controller.purchaseTypeC,
+              onChanged: (v) => controller.purchaseTypeC.value = v,
+              hint: "Pilih Tipe",
+              icon: Icons.shopping_cart_checkout,
+            ),
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Jumlah Santri",
+              items: controller.studentCountList,
+              selectedValue: controller.studentCountC,
+              onChanged: (v) => controller.studentCountC.value = v,
+              hint: "Pilih Range",
+              icon: Icons.people_alt_outlined,
+            ),
+          ]
+          // --- CASE 5: INSTITUSI - PARTY ---
+          else if (controller.typeC.value == "Institusi - Party") ...[
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Kategori",
+              items: controller.categoryList,
+              selectedValue: controller.categoryC,
+              onChanged: (v) => controller.categoryC.value = v,
+              hint: "Pilih Kategori",
+              icon: Icons.category_outlined,
+            ),
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Tipe Pembelian",
+              items: controller.purchaseTypeList,
+              selectedValue: controller.purchaseTypeC,
+              onChanged: (v) => controller.purchaseTypeC.value = v,
+              hint: "Pilih Tipe",
+              icon: Icons.shopping_cart_checkout,
+            ),
+          ]
+          // --- CASE 6: INSTITUSI - KOPERASI (BARU) ---
+          else if (controller.typeC.value == "Institusi - Koperasi") ...[
+            SizedBox(height: 16.h),
+
+            // 1. Tipe Distribusi
+            CustomDropdown(
+              label: "Tipe Distribusi",
+              items: controller.distributionTypeList,
+              selectedValue: controller.distributionTypeC,
+              onChanged: (v) => controller.distributionTypeC.value = v,
+              hint: "Pilih Tipe",
+              icon: Icons.local_shipping_outlined,
+            ),
+            SizedBox(height: 16.h),
+
+            // 2. Kategori
+            CustomDropdown(
+              label: "Kategori",
+              items: controller.categoryList,
+              selectedValue: controller.categoryC,
+              onChanged: (v) => controller.categoryC.value = v,
+              hint: "Pilih Kategori",
+              icon: Icons.category_outlined,
+            ),
+            SizedBox(height: 16.h),
+
+            // 3. Tipe Pembelian
+            CustomDropdown(
+              label: "Tipe Pembelian",
+              items: controller.purchaseTypeList,
+              selectedValue: controller.purchaseTypeC,
+              onChanged: (v) => controller.purchaseTypeC.value = v,
+              hint: "Pilih Tipe",
+              icon: Icons.shopping_cart_checkout,
+            ),
+            SizedBox(height: 16.h),
+
+            // 4. Jumlah Anggota (Koperasi)
+            CustomDropdown(
+              label: "Jumlah Anggota",
+              items: controller.coopMemberCountList,
+              selectedValue: controller.coopMemberCountC,
+              onChanged: (v) => controller.coopMemberCountC.value = v,
+              hint: "Pilih Range",
+              icon: Icons.groups_outlined,
+            ),
           ],
 
           SizedBox(height: 24.h),
           _sectionDivider("Informasi Dasar"),
 
+          // ... (Input Nama Outlet dst) ...
           _inputLabel("Nama Outlet"),
           PrimaryTextFormField(
             controller: controller.nameC,
