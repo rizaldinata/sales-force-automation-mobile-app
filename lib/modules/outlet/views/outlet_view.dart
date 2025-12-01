@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salesforce_app/app/ui/theme/app_theme.dart';
 import 'package:salesforce_app/app/ui/theme/app_constants.dart';
 import 'package:salesforce_app/modules/outlet/controllers/outlet_controller.dart';
+import 'package:salesforce_app/modules/outlet/views/add_outlet_view.dart';
 import 'package:salesforce_app/modules/outlet/views/widgets/outlet_card.dart';
 
 class OutletView extends GetView<OutletController> {
@@ -19,7 +20,7 @@ class OutletView extends GetView<OutletController> {
         height: 50.h,
         child: FloatingActionButton.extended(
           onPressed: () {
-            Get.snackbar("Info", "Fitur Tambah Outlet akan segera hadir");
+            Get.to(() => const AddOutletView());
           },
           backgroundColor: primaryColor,
           elevation: 4,

@@ -10,6 +10,9 @@ class PrimaryTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final VoidCallback? onFieldSubmitted;
   final bool autofocus;
+  final bool readOnly;
+  final TextInputType? keyboardType;
+  final int maxLines;
 
   const PrimaryTextFormField({
     super.key,
@@ -21,6 +24,9 @@ class PrimaryTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.onFieldSubmitted,
     this.autofocus = false,
+    this.readOnly = false,
+    this.keyboardType,
+    this.maxLines = 1,
   });
 
   @override
@@ -30,6 +36,9 @@ class PrimaryTextFormField extends StatelessWidget {
       autofocus: autofocus,
       textInputAction: textInputAction,
       obscureText: obscureText,
+      readOnly: readOnly,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
       style: TextStyle(
         fontSize: 14.sp,
         fontWeight: FontWeight.w500,
@@ -41,7 +50,13 @@ class PrimaryTextFormField extends StatelessWidget {
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      decoration: InputDecoration(hintText: hintText, suffixIcon: suffixIcon),
+      decoration: InputDecoration(
+        hintText: hintText,
+        suffixIcon: suffixIcon,
+        contentPadding: maxLines > 1
+            ? EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h)
+            : null,
+      ),
       validator: validator,
     );
   }
