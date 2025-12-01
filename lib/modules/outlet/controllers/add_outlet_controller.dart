@@ -16,8 +16,14 @@ class AddOutletController extends GetxController {
   // ============================
   // STEP 1: IDENTITAS & LEGALITAS
   // ============================
-  final dateC = TextEditingController(); // Tanggal Registrasi
-  final typeC = Rxn<String>(); // Jenis Outlet
+  final dateC = TextEditingController();
+  final typeC = Rxn<String>();
+
+  final distributionTypeC = Rxn<String>();
+  final categoryC = Rxn<String>();
+
+  final purchaseTypeC = Rxn<String>();
+  final employeeCountC = Rxn<String>();
 
   final nameC = TextEditingController(); // Nama Outlet
   final managerC = TextEditingController(); // Pengelola
@@ -55,14 +61,49 @@ class AddOutletController extends GetxController {
   final onlineShopC = Rxn<String>(); // Online Shop (Tokped/Shopee)
   final visitDayC = Rxn<String>(); // Jadwal Kunjungan (Tambahan Logis)
 
-  // --- DATA DUMMY DROPDOWN ---
-  final typeList = ["Institusi - Ponpes", "Retail", "Grosir", "Warung"];
+  final typeList = [
+    "Tradisional",
+    "Institusi - B2B",
+    "Institusi - B2G",
+    "Institusi - Ponpes",
+    "Institusi - Party",
+    "Institusi - Koperasi",
+    "Supermarket",
+    "Minimarket",
+    "Reseller",
+    "Kemitraan",
+  ];
+
+  // Tradisional
+  final distributionTypeList = ["Agen", "Grosir", "Grosir + Retail", "Retail"];
+
+  // Tradisional & B2G
+  final categoryList = [
+    "A - Top",
+    "B - Middle Up",
+    "C - Midlle",
+    "D - Middle Low",
+    "E - Low",
+    "R - Reseller",
+  ];
+
+  // B2B & B2G
+  final purchaseTypeList = ["CSR", "Gift", "Komunitas", "Promosi", "Seragam"];
+
+  // B2B
+  final employeeCountList = [
+    "1000 - 5000 Orang",
+    "< 1000 Orang",
+    "> 5000 Orang",
+  ];
+
   final locationTypeList = [
     "Pinggir Jalan",
     "Dalam Pasar",
     "Perumahan",
     "Mall",
   ];
+
   final shopStatusList = ["Milik Sendiri", "Sewa", "Kerabat"];
   final buildingSizeList = ["< 20m2", "20-50m2", "50-100m2", "> 100m2"];
   final buildingTypeList = ["Permanen", "Semi Permanen", "Kios"];
@@ -76,13 +117,41 @@ class AddOutletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Auto-fill tanggal hari ini
     dateC.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  }
+
+  Future<void> chooseDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFF096835),
+              onPrimary: Colors.white,
+              onSurface: Colors.black87,
+            ),
+            dialogTheme: DialogThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      dateC.text = DateFormat('yyyy-MM-dd').format(picked);
+    }
   }
 
   @override
   void onClose() {
-    // Dispose semua controller untuk mencegah memory leak
     dateC.dispose();
     nameC.dispose();
     managerC.dispose();
@@ -99,7 +168,6 @@ class AddOutletController extends GetxController {
     super.onClose();
   }
 
-  // --- LOGIC STEPPER ---
   void nextStep() {
     bool isValid = false;
     if (currentStep.value == 0) {

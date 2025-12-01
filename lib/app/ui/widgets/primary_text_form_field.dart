@@ -10,9 +10,12 @@ class PrimaryTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final VoidCallback? onFieldSubmitted;
   final bool autofocus;
+
+  // Parameter Tambahan
   final bool readOnly;
   final TextInputType? keyboardType;
   final int maxLines;
+  final VoidCallback? onTap; // <--- TAMBAHAN BARU
 
   const PrimaryTextFormField({
     super.key,
@@ -27,6 +30,7 @@ class PrimaryTextFormField extends StatelessWidget {
     this.readOnly = false,
     this.keyboardType,
     this.maxLines = 1,
+    this.onTap, // <--- Masukkan ke Constructor
   });
 
   @override
@@ -39,6 +43,7 @@ class PrimaryTextFormField extends StatelessWidget {
       readOnly: readOnly,
       keyboardType: keyboardType,
       maxLines: maxLines,
+      onTap: onTap, // <--- Pasang di sini
       style: TextStyle(
         fontSize: 14.sp,
         fontWeight: FontWeight.w500,

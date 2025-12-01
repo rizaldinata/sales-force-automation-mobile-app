@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +18,7 @@ class AddOutletView extends StatelessWidget {
     final controller = Get.put(AddOutletController());
 
     return Scaffold(
-      backgroundColor: backgroundColor, // Background Abu-abu sesuai Tema
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
           "Tambah Outlet",
@@ -50,8 +52,6 @@ class AddOutletView extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 100.h),
                 physics: const BouncingScrollPhysics(),
                 child: Container(
-                  // --- STYLE SENADA: CARD PUTIH DENGAN SHADOW ---
-                  // Mirip dengan style di ProfileTab / Dashboard
                   padding: EdgeInsets.symmetric(
                     horizontal: 20.w,
                     vertical: 24.h,
@@ -72,7 +72,7 @@ class AddOutletView extends StatelessWidget {
                   child: Column(
                     children: [
                       if (controller.currentStep.value == 0)
-                        _buildStep1(controller),
+                        _buildStep1(controller, context),
                       if (controller.currentStep.value == 1)
                         _buildStep2(controller),
                       if (controller.currentStep.value == 2)
@@ -169,8 +169,7 @@ class AddOutletView extends StatelessWidget {
     );
   }
 
-  // --- 2. STEP 1: IDENTITAS (Full with Card Style) ---
-  Widget _buildStep1(AddOutletController controller) {
+  Widget _buildStep1(AddOutletController controller, BuildContext context) {
     return Form(
       key: controller.formKeyStep1,
       child: Column(
@@ -181,6 +180,7 @@ class AddOutletView extends StatelessWidget {
             controller: controller.dateC,
             hintText: "-",
             readOnly: true,
+            onTap: () => controller.chooseDate(context),
             suffixIcon: Icon(
               Icons.calendar_today,
               color: primaryColor,
@@ -188,14 +188,80 @@ class AddOutletView extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
+
           CustomDropdown(
             label: "Jenis & Tipe Outlet",
             hint: "Pilih Jenis",
             items: controller.typeList,
             selectedValue: controller.typeC,
-            onChanged: (val) => controller.typeC.value = val,
+            onChanged: (val) {
+              controller.typeC.value = val;
+              controller.distributionTypeC.value = null;
+              controller.categoryC.value = null;
+              controller.purchaseTypeC.value = null;
+              controller.employeeCountC.value = null;
+            },
             icon: Icons.store_mall_directory,
           ),
+
+          if (controller.typeC.value == "Tradisional") ...[
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Tipe Distribusi",
+              items: controller.distributionTypeList,
+              selectedValue: controller.distributionTypeC,
+              onChanged: (v) => controller.distributionTypeC.value = v,
+              hint: "Pilih Tipe",
+              icon: Icons.local_shipping_outlined,
+            ),
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Kategori",
+              items: controller.categoryList,
+              selectedValue: controller.categoryC,
+              onChanged: (v) => controller.categoryC.value = v,
+              hint: "Pilih Kategori",
+              icon: Icons.category_outlined,
+            ),
+          ] else if (controller.typeC.value == "Institusi - B2B") ...[
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Tipe Pembelian",
+              items: controller.purchaseTypeList,
+              selectedValue: controller.purchaseTypeC,
+              onChanged: (v) => controller.purchaseTypeC.value = v,
+              hint: "Pilih Tipe",
+              icon: Icons.shopping_cart_checkout,
+            ),
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Jumlah Karyawan",
+              items: controller.employeeCountList,
+              selectedValue: controller.employeeCountC,
+              onChanged: (v) => controller.employeeCountC.value = v,
+              hint: "Pilih Range",
+              icon: Icons.people_outline,
+            ),
+          ] else if (controller.typeC.value == "Institusi - B2G") ...[
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Kategori",
+              items: controller.categoryList,
+              selectedValue: controller.categoryC,
+              onChanged: (v) => controller.categoryC.value = v,
+              hint: "Pilih Kategori",
+              icon: Icons.category_outlined,
+            ),
+            SizedBox(height: 16.h),
+            CustomDropdown(
+              label: "Tipe Pembelian",
+              items: controller.purchaseTypeList,
+              selectedValue: controller.purchaseTypeC,
+              onChanged: (v) => controller.purchaseTypeC.value = v,
+              hint: "Pilih Tipe",
+              icon: Icons.shopping_cart_checkout,
+            ),
+          ],
 
           SizedBox(height: 24.h),
           _sectionDivider("Informasi Dasar"),
@@ -267,8 +333,6 @@ class AddOutletView extends StatelessWidget {
     );
   }
 
-  // --- 3. STEP 2: LOKASI ---
-  // --- 3. STEP 2: LOKASI ---
   Widget _buildStep2(AddOutletController controller) {
     return Form(
       key: controller.formKeyStep2,
