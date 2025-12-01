@@ -163,15 +163,7 @@ class OutletFilterSheet extends GetView<OutletController> {
 
   Widget _buildPeriodPicker(BuildContext context) {
     return InkWell(
-      onTap: () async {
-        final picked = await showDatePicker(
-          context: context,
-          initialDate: controller.selectedMonth.value,
-          firstDate: DateTime(2020),
-          lastDate: DateTime(2030),
-        );
-        if (picked != null) controller.selectedMonth.value = picked;
-      },
+      onTap: () => controller.pickMonth(),
       borderRadius: BorderRadius.circular(AppRadius.lg),
       child: Container(
         height: 50.h,
@@ -184,12 +176,14 @@ class OutletFilterSheet extends GetView<OutletController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              DateFormat(
-                'MMMM yyyy',
-                'id_ID',
-              ).format(controller.selectedMonth.value),
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+            Obx(
+              () => Text(
+                DateFormat(
+                  'MMMM yyyy',
+                  'id_ID',
+                ).format(controller.selectedMonth.value),
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+              ),
             ),
             const Icon(Icons.calendar_month, color: primaryColor),
           ],

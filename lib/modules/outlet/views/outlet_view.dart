@@ -134,7 +134,10 @@ class OutletView extends GetView<OutletController> {
                           child: SizedBox(
                             width: 24,
                             height: 24,
-                            child: CircularProgressIndicator(strokeWidth: 2.5),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              color: primaryColor,
+                            ),
                           ),
                         ),
                       );

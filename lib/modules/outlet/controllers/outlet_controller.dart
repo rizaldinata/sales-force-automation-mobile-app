@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salesforce_app/app/data/models/outlet_model.dart';
+import 'package:salesforce_app/app/ui/widgets/month_picker_dialog.dart';
 import 'package:salesforce_app/modules/outlet/views/widgets/outlet_filter_sheet.dart';
 
 class OutletController extends GetxController {
@@ -88,6 +89,16 @@ class OutletController extends GetxController {
       } else {
         endDate.value = picked;
       }
+    }
+  }
+
+  Future<void> pickMonth() async {
+    final DateTime? picked = await Get.dialog(
+      MonthPickerDialog(initialDate: selectedMonth.value),
+    );
+
+    if (picked != null) {
+      selectedMonth.value = picked;
     }
   }
 
