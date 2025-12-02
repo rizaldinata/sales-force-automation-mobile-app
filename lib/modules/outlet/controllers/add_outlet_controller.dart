@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:salesforce_app/app/core/utils/app_dialog.dart';
+import 'package:salesforce_app/app/data/models/region_model.dart';
 
 class AddOutletController extends GetxController {
   // State tahap form
@@ -42,17 +43,25 @@ class AddOutletController extends GetxController {
   final plafonC = TextEditingController();
 
   // Tahap 2
-  final areaC = TextEditingController();
-  final isDetailAreaVisible = false.obs;
-  final addressC = TextEditingController();
-  final postalCodeC = TextEditingController();
-
   // Foto identitas dan lokasi
   var ktpPhotoPath = Rxn<String>();
   var npwpPhotoPath = Rxn<String>();
   var shopPhotoPaths = <String>[].obs;
 
   final ImagePicker _picker = ImagePicker();
+
+  // Alamat dan lokasi
+  final areaC = TextEditingController();
+  var selectedRegion = Rxn<RegionModel>();
+
+  var isSearchingRegion = false.obs;
+  var regionSearchQuery = ''.obs;
+  var regionSearchResults = <RegionModel>[].obs;
+  final List<RegionModel> _allRegionsMaster = [];
+
+  final isDetailAreaVisible = false.obs;
+  final addressC = TextEditingController();
+  final postalCodeC = TextEditingController();
 
   // Group Bangunan (Dropdowns)
   final locationTypeC = Rxn<String>(); // Lokasi (Mall, Pasar, dll)
@@ -139,6 +148,16 @@ class AddOutletController extends GetxController {
   void onInit() {
     super.onInit();
     dateC.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+    _generateDummyRegions();
+
+    regionSearchResults.assignAll(_allRegionsMaster);
+
+    debounce(
+      regionSearchQuery,
+      (query) => searchRegion(query),
+      time: const Duration(milliseconds: 500),
+    );
   }
 
   Future<void> chooseDate(BuildContext context) async {
@@ -285,6 +304,110 @@ class AddOutletController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", "Gagal mengambil gambar: $e");
     }
+  }
+
+  void _generateDummyRegions() {
+    _allRegionsMaster.addAll([
+      RegionModel(
+        kelurahan: "DAHANREJO",
+        kecamatan: "KEBOMAS",
+        kota: "KABUPATEN GRESIK",
+        provinsi: "JAWA TIMUR",
+        kodePos: "61124",
+      ),
+      RegionModel(
+        kelurahan: "GENDING",
+        kecamatan: "KEBOMAS",
+        kota: "KABUPATEN GRESIK",
+        provinsi: "JAWA TIMUR",
+        kodePos: "61123",
+      ),
+      RegionModel(
+        kelurahan: "GIRI",
+        kecamatan: "KEBOMAS",
+        kota: "KABUPATEN GRESIK",
+        provinsi: "JAWA TIMUR",
+        kodePos: "61124",
+      ),
+      RegionModel(
+        kelurahan: "GULOMANTUNG",
+        kecamatan: "KEBOMAS",
+        kota: "KABUPATEN GRESIK",
+        provinsi: "JAWA TIMUR",
+        kodePos: "61124",
+      ),
+      RegionModel(
+        kelurahan: "INDRO",
+        kecamatan: "KEBOMAS",
+        kota: "KABUPATEN GRESIK",
+        provinsi: "JAWA TIMUR",
+        kodePos: "61124",
+      ),
+      RegionModel(
+        kelurahan: "KARANGKERING",
+        kecamatan: "KEBOMAS",
+        kota: "KABUPATEN GRESIK",
+        provinsi: "JAWA TIMUR",
+        kodePos: "61124",
+      ),
+      RegionModel(
+        kelurahan: "KAWISANYAR",
+        kecamatan: "KEBOMAS",
+        kota: "KABUPATEN GRESIK",
+        provinsi: "JAWA TIMUR",
+        kodePos: "61124",
+      ),
+      RegionModel(
+        kelurahan: "KEMBANGAN",
+        kecamatan: "KEBOMAS",
+        kota: "KABUPATEN GRESIK",
+        provinsi: "JAWA TIMUR",
+        kodePos: "61124",
+      ),
+    ]);
+  }
+
+  void searchRegion(String query) async {
+    // 3. LOGIC UTAMA:
+    // Jika kosong -> Tampilkan SEMUA data master (seperti halaman utama)
+    // Jika ada isi -> Filter data master
+
+    if (query.isEmpty) {
+      isSearchingRegion.value = false;
+      regionSearchResults.assignAll(_allRegionsMaster);
+      return;
+    }
+
+    isSearchingRegion.value = true;
+
+    // Simulasi delay sedikit (opsional, bisa dihapus jika data lokal)
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    // Filter dari Master Data
+    final results = _allRegionsMaster
+        .where(
+          (element) =>
+              element.kelurahan.toLowerCase().contains(query.toLowerCase()) ||
+              element.kecamatan.toLowerCase().contains(query.toLowerCase()),
+        )
+        .toList();
+
+    regionSearchResults.assignAll(results);
+    isSearchingRegion.value = false;
+  }
+
+  void selectRegion(RegionModel region) {
+    selectedRegion.value = region;
+
+    // Set text di field input agar user melihat apa yang dipilih
+    areaC.text = "${region.kelurahan}, ${region.kecamatan}, ${region.kota}";
+
+    // Auto-fill Kode POS jika field kode pos masih kosong
+    if (postalCodeC.text.isEmpty) {
+      postalCodeC.text = region.kodePos;
+    }
+
+    Get.back(); // Tutup Dialog Pencarian
   }
 
   @override

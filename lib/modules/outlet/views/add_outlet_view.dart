@@ -11,6 +11,7 @@ import 'package:salesforce_app/app/ui/widgets/primary_button.dart';
 import 'package:salesforce_app/app/ui/widgets/primary_text_form_field.dart';
 import 'package:salesforce_app/app/ui/widgets/custom_dropdown.dart';
 import 'package:salesforce_app/modules/outlet/controllers/add_outlet_controller.dart';
+import 'package:salesforce_app/modules/outlet/views/widgets/region_search_dialog.dart';
 
 class AddOutletView extends StatelessWidget {
   const AddOutletView({super.key});
@@ -792,11 +793,18 @@ class AddOutletView extends StatelessWidget {
           _inputLabel("Area / Wilayah"),
           PrimaryTextFormField(
             controller: controller.areaC,
-            hintText: "Cari Area...",
-            suffixIcon: Icon(Icons.search, color: Colors.grey[400]),
+            hintText: "Cari Area... (Tap disini)",
+            readOnly: true,
+            onTap: () {
+              Get.bottomSheet(
+                RegionSearchDialog(),
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+              );
+            },
+            suffixIcon: Icon(Icons.search, color: primaryColor),
           ),
 
-          // ... (Sisa kode ke bawah SAMA SEPERTI SEBELUMNYA) ...
           Obx(
             () => Transform.translate(
               offset: Offset(-12.w, 0),
