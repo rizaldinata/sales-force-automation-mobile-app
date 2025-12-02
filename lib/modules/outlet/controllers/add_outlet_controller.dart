@@ -16,7 +16,6 @@ class AddOutletController extends GetxController {
   final formKeyStep3 = GlobalKey<FormState>();
 
   // Tahap 1
-
   // Tanggal Registrasi
   final dateC = TextEditingController();
 
@@ -47,23 +46,24 @@ class AddOutletController extends GetxController {
   var ktpPhotoPath = Rxn<String>();
   var npwpPhotoPath = Rxn<String>();
   var shopPhotoPaths = <String>[].obs;
-
   final ImagePicker _picker = ImagePicker();
 
   // Alamat dan lokasi
   final areaC = TextEditingController();
+  final provinceC = TextEditingController();
+  final cityC = TextEditingController();
+  final districtC = TextEditingController();
+  final villageC = TextEditingController();
   var selectedRegion = Rxn<RegionModel>();
-
   var isSearchingRegion = false.obs;
   var regionSearchQuery = ''.obs;
   var regionSearchResults = <RegionModel>[].obs;
   final List<RegionModel> _allRegionsMaster = [];
-
   final isDetailAreaVisible = false.obs;
   final addressC = TextEditingController();
   final postalCodeC = TextEditingController();
 
-  // Group Bangunan (Dropdowns)
+  // Detail bangunan
   final locationTypeC = Rxn<String>(); // Lokasi (Mall, Pasar, dll)
   final shopStatusC = Rxn<String>(); // Status Toko (Aktif/Tutup)
   final buildingSizeC = Rxn<String>(); // Luas Bangunan
@@ -127,16 +127,10 @@ class AddOutletController extends GetxController {
   // Koperasi
   final coopMemberCountList = ["1000 - 5000 Orang", "< 1000 Orang"];
 
-  final locationTypeList = [
-    "Pinggir Jalan",
-    "Dalam Pasar",
-    "Perumahan",
-    "Mall",
-  ];
-
-  final shopStatusList = ["Milik Sendiri", "Sewa", "Kerabat"];
-  final buildingSizeList = ["< 20m2", "20-50m2", "50-100m2", "> 100m2"];
-  final buildingTypeList = ["Permanen", "Semi Permanen", "Kios"];
+  final locationTypeList = ["Jalan Utaama", "Pasar", "Pusat Perbelanjaan"];
+  final shopStatusList = ["Tetap", "Menyewa"];
+  final buildingSizeList = ["10 - 20 m2", "< 10 m2>", "> 20 m2", "Gift"];
+  final buildingTypeList = ["1 Lantai", "2 Lantai", "> 2 Lantai"];
 
   final uplineList = ["Distributor Pusat", "Sub-Distributor", "Agen"];
   final brandList = ["Brand A", "Brand B", "Multi Brand"];
@@ -368,10 +362,6 @@ class AddOutletController extends GetxController {
   }
 
   void searchRegion(String query) async {
-    // 3. LOGIC UTAMA:
-    // Jika kosong -> Tampilkan SEMUA data master (seperti halaman utama)
-    // Jika ada isi -> Filter data master
-
     if (query.isEmpty) {
       isSearchingRegion.value = false;
       regionSearchResults.assignAll(_allRegionsMaster);
@@ -399,15 +389,16 @@ class AddOutletController extends GetxController {
   void selectRegion(RegionModel region) {
     selectedRegion.value = region;
 
-    // Set text di field input agar user melihat apa yang dipilih
-    areaC.text = "${region.kelurahan}, ${region.kecamatan}, ${region.kota}";
+    areaC.text =
+        "${region.kelurahan}, ${region.kecamatan}, ${region.kota}, ${region.provinsi}, ${region.kodePos}";
 
-    // Auto-fill Kode POS jika field kode pos masih kosong
-    if (postalCodeC.text.isEmpty) {
-      postalCodeC.text = region.kodePos;
-    }
+    provinceC.text = region.provinsi;
+    cityC.text = region.kota;
+    districtC.text = region.kecamatan;
+    villageC.text = region.kelurahan;
+    postalCodeC.text = region.kodePos;
 
-    Get.back(); // Tutup Dialog Pencarian
+    Get.back();
   }
 
   @override
@@ -423,6 +414,10 @@ class AddOutletController extends GetxController {
     npwpC.dispose();
     plafonC.dispose();
     areaC.dispose();
+    provinceC.dispose();
+    cityC.dispose();
+    districtC.dispose();
+    villageC.dispose();
     addressC.dispose();
     postalCodeC.dispose();
     super.onClose();

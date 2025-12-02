@@ -737,47 +737,14 @@ class AddOutletView extends StatelessWidget {
   }
 
   // Step 2
+  // --- 3. STEP 2: LOKASI (FIXED) ---
   Widget _buildStep2(AddOutletController controller) {
     return Form(
       key: controller.formKeyStep2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // JUDUL BAGIAN
-          _sectionDivider("Dokumentasi Outlet"),
-
-          // LAYOUT FOTO GRID (Agar hemat tempat)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _buildPhotoSlot(
-                  label: "Foto KTP",
-                  hint: "Ambil KTP",
-                  isRequired: true,
-                  photoPath: controller.ktpPhotoPath,
-                  // PANGGIL FUNGSI PICKER CONTROLLER
-                  onTap: () =>
-                      controller.showImagePicker(controller.ktpPhotoPath),
-                ),
-              ),
-
-              SizedBox(width: 16.w),
-
-              Expanded(
-                child: _buildPhotoSlot(
-                  label: "Foto NPWP",
-                  hint: "Ambil NPWP",
-                  photoPath: controller.npwpPhotoPath,
-                  onTap: () =>
-                      controller.showImagePicker(controller.npwpPhotoPath),
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(height: 16.h),
-
+          // 1. FOTO (Tetap)
           _buildMultiPhotoSection(
             label: "Foto Lokasi / Toko",
             hint: "Ambil foto tampak depan, dalam, dan plang nama toko.",
@@ -790,11 +757,11 @@ class AddOutletView extends StatelessWidget {
           SizedBox(height: 28.h),
           _sectionDivider("Alamat & Lokasi"),
 
+          // 2. TOMBOL CARI AREA (Trigger Only)
           _inputLabel("Area / Wilayah"),
-          PrimaryTextFormField(
-            controller: controller.areaC,
-            hintText: "Cari Area... (Tap disini)",
-            readOnly: true,
+
+          // HAPUS OBX DI SINI KARENA TIDAK PERLU
+          InkWell(
             onTap: () {
               Get.bottomSheet(
                 RegionSearchDialog(),
@@ -802,40 +769,121 @@ class AddOutletView extends StatelessWidget {
                 backgroundColor: Colors.transparent,
               );
             },
-            suffixIcon: Icon(Icons.search, color: primaryColor),
-          ),
-
-          Obx(
-            () => Transform.translate(
-              offset: Offset(-12.w, 0),
-              child: CheckboxListTile(
-                title: Text(
-                  "Tampilkan Detail Area",
-                  style: TextStyle(fontSize: 13.sp, color: Colors.grey[700]),
-                ),
-                value: controller.isDetailAreaVisible.value,
-                onChanged: (val) => controller.isDetailAreaVisible.value = val!,
-                controlAffinity: ListTileControlAffinity.leading,
-                activeColor: primaryColor,
-                contentPadding: EdgeInsets.zero,
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                border: Border.all(color: Colors.grey[300]!, width: 1.0),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.search, color: primaryColor, size: 20.sp),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      "Tap untuk cari Kecamatan / Kelurahan...",
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 14.sp,
+                      ),
+                      maxLines: 1, // Pastikan cuma 1 baris
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
 
+          // 3. KOLOM HASIL (Pakai Obx KARENA memantau controller.areaC.text)
+          // Pastikan Obx HANYA membungkus bagian yang berubah ini
+          Obx(() {
+            // Kita gunakan variabel dummy boolean agar Obx mendeteksi perubahan
+            // Atau cara yang lebih benar: Jadikan areaC.text sebagai observable
+            // TAPI, karena TextEditingController bukan Rx, kita perlu trik.
+
+            // TRIK FIX: Pantau selectedRegion yang merupakan Rxn<RegionModel>
+            if (controller.selectedRegion.value != null) {
+              return Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(top: 12.h),
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: mintGrean.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  border: Border.all(color: primaryColor.withOpacity(0.3)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          color: primaryColor,
+                          size: 20.sp,
+                        ),
+                        SizedBox(width: 8.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Lokasi Terpilih:",
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4.h),
+                              Text(
+                                controller.areaC.text,
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Tombol Hapus/Reset
+                        GestureDetector(
+                          onTap: () {
+                            controller.areaC.clear();
+                            controller.postalCodeC.clear();
+                            controller.selectedRegion.value =
+                                null; // Reset Rx agar Obx update
+                          },
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.grey,
+                            size: 18.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          }),
+
+          SizedBox(height: 16.h),
+
+          // 4. ALAMAT LENGKAP
           _inputLabel("Alamat Lengkap"),
           PrimaryTextFormField(
             controller: controller.addressC,
-            hintText: "Nama Jalan, RT/RW...",
+            hintText: "Nama Jalan, Gang, No. Rumah, RT/RW...",
             maxLines: 3,
             validator: (v) => v!.isEmpty ? "Wajib diisi" : null,
-          ),
-          SizedBox(height: 16.h),
-
-          _inputLabel("Kode POS"),
-          PrimaryTextFormField(
-            controller: controller.postalCodeC,
-            hintText: "xxxxx",
-            keyboardType: TextInputType.number,
           ),
 
           SizedBox(height: 28.h),
