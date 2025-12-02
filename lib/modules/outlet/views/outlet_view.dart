@@ -116,9 +116,34 @@ class OutletView extends GetView<OutletController> {
 
             Expanded(
               child: Obx(() {
-                if (controller.displayedOutlets.isEmpty &&
-                    controller.isLoadingMore.value) {
-                  return const Center(child: CircularProgressIndicator());
+                if (controller.isFiltering.value) {
+                  return const Center(
+                    child: CircularProgressIndicator(color: primaryColor),
+                  );
+                }
+
+                if (controller.displayedOutlets.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search_off,
+                          size: 64.sp,
+                          color: Colors.grey[300],
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          "Data tidak ditemukan",
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.grey[500],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 }
 
                 return ListView.builder(
