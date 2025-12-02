@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -440,67 +442,353 @@ class AddOutletView extends StatelessWidget {
     );
   }
 
+  Widget _buildPhotoSlot({
+    required String label,
+    required String hint,
+    required Rxn<String> photoPath,
+    required VoidCallback onTap,
+    bool isRequired = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Label
+        SizedBox(
+          height: 20.h,
+          child: Row(
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[700],
+                ),
+              ),
+              if (isRequired)
+                Text(
+                  "*",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        SizedBox(height: 8.h),
+
+        // Kotak Foto
+        Obx(() {
+          bool hasPhoto = photoPath.value != null;
+          return InkWell(
+            onTap: hasPhoto
+                ? () => _showPreviewDialog(photoPath.value!)
+                : onTap,
+            borderRadius: BorderRadius.circular(12.r),
+            child: Container(
+              height: 110.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: hasPhoto ? primaryColor : Colors.grey[300]!,
+                  width: 1.0,
+                ),
+              ),
+              child: hasPhoto
+                  ? Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(11.r),
+                          child: Image.file(
+                            File(photoPath.value!),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          ),
+                        ),
+                        Positioned(
+                          top: 6,
+                          right: 6,
+                          child: GestureDetector(
+                            onTap: () => photoPath.value = null,
+                            child: CircleAvatar(
+                              radius: 12.r,
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.close,
+                                size: 16.sp,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(12.w),
+                          decoration: BoxDecoration(
+                            color: primaryColor.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.add_a_photo,
+                            color: primaryColor,
+                            size: 24.sp,
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          hint,
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget _buildMultiPhotoSection({
+    required String label,
+    required String hint,
+    required RxList<String> photoPaths,
+    required VoidCallback onAdd,
+    required Function(int) onRemove,
+    bool isRequired = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 20.h,
+          child: Row(
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[700],
+                ),
+              ),
+              if (isRequired)
+                Text(
+                  "*",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              const Spacer(),
+              Obx(
+                () => Text(
+                  "${photoPaths.length}/5 Foto",
+                  style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 8.h),
+
+        SizedBox(
+          height: 110.h,
+          child: Obx(() {
+            bool isFull = photoPaths.length >= 5;
+            int itemCount = isFull ? photoPaths.length : photoPaths.length + 1;
+
+            return ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: itemCount,
+              separatorBuilder: (c, i) => SizedBox(width: 12.w),
+              itemBuilder: (context, index) {
+                if (!isFull && index == photoPaths.length) {
+                  return InkWell(
+                    onTap: onAdd,
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Container(
+                      width: 110.h,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: Colors.grey[300]!,
+                          width: 1.0,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(12.w),
+                            decoration: BoxDecoration(
+                              color: primaryColor.withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.add_a_photo,
+                              color: primaryColor,
+                              size: 24.sp,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            "Tambah",
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
+                return GestureDetector(
+                  onTap: () => _showPreviewDialog(photoPaths[index]),
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 110.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(color: primaryColor, width: 1.0),
+                          image: DecorationImage(
+                            image: FileImage(File(photoPaths[index])),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 6,
+                        right: 6,
+                        child: GestureDetector(
+                          onTap: () => onRemove(index),
+                          child: CircleAvatar(
+                            radius: 12.r,
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              Icons.close,
+                              size: 16.sp,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }),
+        ),
+        SizedBox(height: 6.h),
+        Text(
+          hint,
+          style: TextStyle(
+            fontSize: 10.sp,
+            color: Colors.grey[500],
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showPreviewDialog(String path) {
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.all(16.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12.r),
+              child: Image.file(File(path)),
+            ),
+            SizedBox(height: 16.h),
+            FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.white,
+              child: Icon(Icons.close, color: Colors.black),
+              onPressed: () => Get.back(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Step 2
   Widget _buildStep2(AddOutletController controller) {
     return Form(
       key: controller.formKeyStep2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Dokumentasi",
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 12.h),
+          // JUDUL BAGIAN
+          _sectionDivider("Dokumentasi Outlet"),
 
-          // Style Foto
-          InkWell(
-            onTap: () {
-              /* Logic Foto */
-            },
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            child: Container(
-              height: 140.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: BorderRadius.circular(AppRadius.lg),
-                // PERBAIKAN DI SINI:
-                // Hapus 'style: BorderStyle.dashed' ganti dengan solid atau hapus style-nya (default solid)
-                border: Border.all(color: Colors.grey[300]!, width: 1.5),
+          // LAYOUT FOTO GRID (Agar hemat tempat)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _buildPhotoSlot(
+                  label: "Foto KTP",
+                  hint: "Ambil KTP",
+                  isRequired: true,
+                  photoPath: controller.ktpPhotoPath,
+                  // PANGGIL FUNGSI PICKER CONTROLLER
+                  onTap: () =>
+                      controller.showImagePicker(controller.ktpPhotoPath),
+                ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12.w),
-                    decoration: BoxDecoration(
-                      color: mintGrean.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: primaryColor,
-                      size: 28.sp,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Text(
-                    "Ambil Foto Depan Toko",
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+
+              SizedBox(width: 16.w),
+
+              Expanded(
+                child: _buildPhotoSlot(
+                  label: "Foto NPWP",
+                  hint: "Ambil NPWP",
+                  photoPath: controller.npwpPhotoPath,
+                  onTap: () =>
+                      controller.showImagePicker(controller.npwpPhotoPath),
+                ),
               ),
-            ),
+            ],
+          ),
+
+          SizedBox(height: 16.h),
+
+          _buildMultiPhotoSection(
+            label: "Foto Lokasi / Toko",
+            hint: "Ambil foto tampak depan, dalam, dan plang nama toko.",
+            isRequired: true,
+            photoPaths: controller.shopPhotoPaths,
+            onAdd: () => controller.addShopPhoto(),
+            onRemove: (index) => controller.removeShopPhoto(index),
           ),
 
           SizedBox(height: 28.h),
           _sectionDivider("Alamat & Lokasi"),
 
-          // ... kode sisanya sama ...
           _inputLabel("Area / Wilayah"),
           PrimaryTextFormField(
             controller: controller.areaC,
@@ -508,6 +796,7 @@ class AddOutletView extends StatelessWidget {
             suffixIcon: Icon(Icons.search, color: Colors.grey[400]),
           ),
 
+          // ... (Sisa kode ke bawah SAMA SEPERTI SEBELUMNYA) ...
           Obx(
             () => Transform.translate(
               offset: Offset(-12.w, 0),
@@ -587,7 +876,6 @@ class AddOutletView extends StatelessWidget {
     );
   }
 
-  // --- 4. STEP 3: BISNIS ---
   Widget _buildStep3(AddOutletController controller) {
     return Form(
       key: controller.formKeyStep3,

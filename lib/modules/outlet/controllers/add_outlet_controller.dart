@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:salesforce_app/app/core/utils/app_dialog.dart';
 
 class AddOutletController extends GetxController {
-  // --- STATE STEPPER ---
+  // State tahap form
   var currentStep = 0.obs;
   final int totalSteps = 3;
 
-  // --- FORM KEYS ---
+  // Forms keys
   final formKeyStep1 = GlobalKey<FormState>();
   final formKeyStep2 = GlobalKey<FormState>();
   final formKeyStep3 = GlobalKey<FormState>();
 
-  // ============================
-  // STEP 1: IDENTITAS & LEGALITAS
-  // ============================
-  final dateC = TextEditingController();
-  final typeC = Rxn<String>();
+  // Tahap 1
 
+  // Tanggal Registrasi
+  final dateC = TextEditingController();
+
+  // Jenis dan tipe outlet
+  final typeC = Rxn<String>();
   final distributionTypeC = Rxn<String>();
   final categoryC = Rxn<String>();
   final purchaseTypeC = Rxn<String>();
@@ -26,25 +28,31 @@ class AddOutletController extends GetxController {
   final studentCountC = Rxn<String>();
   final coopMemberCountC = Rxn<String>();
 
-  final nameC = TextEditingController(); // Nama Outlet
-  final managerC = TextEditingController(); // Pengelola
-  final managerPhoneC = TextEditingController(); // HP Pengelola
+  // Informasi dasar
+  final nameC = TextEditingController();
+  final managerC = TextEditingController();
+  final managerPhoneC = TextEditingController();
 
-  final ownerC = TextEditingController(); // Pemilik
-  final ownerPhoneC = TextEditingController(); // HP Pemilik
+  // Pemilik dan legalitas
+  final ownerC = TextEditingController();
+  final ownerPhoneC = TextEditingController();
+  final ktpC = TextEditingController();
+  final telephoneC = TextEditingController();
+  final npwpC = TextEditingController();
+  final plafonC = TextEditingController();
 
-  final ktpC = TextEditingController(); // KTP
-  final telephoneC = TextEditingController(); // Telp Rumah/Kantor
-  final npwpC = TextEditingController(); // NPWP
-  final plafonC = TextEditingController(); // Plafon Kredit
+  // Tahap 2
+  final areaC = TextEditingController();
+  final isDetailAreaVisible = false.obs;
+  final addressC = TextEditingController();
+  final postalCodeC = TextEditingController();
 
-  // ============================
-  // STEP 2: LOKASI & FISIK
-  // ============================
-  final areaC = TextEditingController(); // Area
-  final isDetailAreaVisible = false.obs; // Checkbox Detail Area
-  final addressC = TextEditingController(); // Alamat
-  final postalCodeC = TextEditingController(); // Kode POS
+  // Foto identitas dan lokasi
+  var ktpPhotoPath = Rxn<String>();
+  var npwpPhotoPath = Rxn<String>();
+  var shopPhotoPaths = <String>[].obs;
+
+  final ImagePicker _picker = ImagePicker();
 
   // Group Bangunan (Dropdowns)
   final locationTypeC = Rxn<String>(); // Lokasi (Mall, Pasar, dll)
@@ -160,6 +168,122 @@ class AddOutletController extends GetxController {
 
     if (picked != null) {
       dateC.text = DateFormat('yyyy-MM-dd').format(picked);
+    }
+  }
+
+  void addShopPhoto() {
+    if (shopPhotoPaths.length >= 5) {
+      Get.snackbar(
+        "Batas Tercapai",
+        "Maksimal 5 foto lokasi yang diperbolehkan.",
+        backgroundColor: Colors.orange,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    Get.bottomSheet(
+      Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(20),
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: Colors.blue),
+              title: const Text('Ambil Foto Baru'),
+              onTap: () async {
+                Get.back();
+                final XFile? image = await _picker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 50,
+                );
+                if (image != null) {
+                  shopPhotoPaths.add(image.path);
+                }
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library, color: Colors.green),
+              title: const Text('Pilih dari Galeri'),
+              onTap: () async {
+                Get.back();
+                int remainingSlots = 5 - shopPhotoPaths.length;
+
+                final List<XFile> images = await _picker.pickMultiImage(
+                  imageQuality: 50,
+                );
+
+                if (images.isNotEmpty) {
+                  final imagesToAdd = images
+                      .take(remainingSlots)
+                      .map((e) => e.path)
+                      .toList();
+
+                  shopPhotoPaths.addAll(imagesToAdd);
+
+                  if (images.length > remainingSlots) {
+                    Get.snackbar(
+                      "Info",
+                      "Hanya ${imagesToAdd.length} foto yang ditambahkan karena batas maksimal 5.",
+                    );
+                  }
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void removeShopPhoto(int index) {
+    shopPhotoPaths.removeAt(index);
+  }
+
+  void showImagePicker(Rxn<String> targetVariable) {
+    Get.bottomSheet(
+      Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(20),
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: Colors.blue),
+              title: const Text('Ambil dari Kamera'),
+              onTap: () {
+                Get.back();
+                _pickImage(targetVariable, ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library, color: Colors.green),
+              title: const Text('Ambil dari Galeri'),
+              onTap: () {
+                Get.back();
+                _pickImage(targetVariable, ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickImage(
+    Rxn<String> targetVariable,
+    ImageSource source,
+  ) async {
+    try {
+      final XFile? image = await _picker.pickImage(
+        source: source,
+        imageQuality: 50,
+      );
+
+      if (image != null) {
+        targetVariable.value = image.path;
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Gagal mengambil gambar: $e");
     }
   }
 
