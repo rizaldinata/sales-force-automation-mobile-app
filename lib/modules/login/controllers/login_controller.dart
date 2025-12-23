@@ -61,7 +61,7 @@ class LoginController extends GetxController {
 
         await Future.delayed(const Duration(seconds: 1));
 
-        if (usernameC.text == 'admin' && passwordC.text == '123456') {
+        if (usernameC.text == 'admin' && passwordC.text == 'admin') {
           Get.offAllNamed(AppRoutes.home);
 
           AppDialog.showSuccess(
